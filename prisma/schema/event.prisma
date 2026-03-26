@@ -1,0 +1,80 @@
+model Event {
+  id                   String          @id @default(uuid(7))
+  title                String
+  slug                 String          @unique
+  description          String?         // Text or Rich Text
+  bannerImage          String?
+  status               EventStatus     @default(DRAFT)
+  visibility           EventVisibility @default(PUBLIC)
+  isFeatured           Boolean         @default(false)
+  
+  startDate            DateTime
+  endDate              DateTime
+  timezone             String
+
+  isOnline             Boolean         @default(false)
+  venueName            String?
+  venueAddress         String?
+  onlineLink           String?
+
+  registrationFee      Float           @default(0)
+  currency             String          @default("USD")
+  maxParticipants      Int?
+  registrationDeadline DateTime?
+
+  deletedAt            DateTime?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  // Foreign Keys
+  organizerId          String
+  categoryId           String
+
+  // Relations
+  organizer            User             @relation(fields: [organizerId], references: [id])
+  category             EventCategory    @relation(fields: [categoryId], references: [id])
+  tags                 EventTag[]
+  participations       Participation[]
+  invitations          Invitation[]
+  payments             Payment[]
+  reviews              Review[]
+  bookmarks            Bookmark[]
+  activityLogs         ActivityLog[]
+
+  @@index([organizerId])
+  @@index([categoryId])
+  @@map("events")
+}
+
+model EventCategory {
+  id     String  @id @default(uuid(7))
+  name   String  @unique
+  icon   String?
+  events Event[]
+
+  @@map("event_categories")
+}
+
+model EventTag {
+  id      String @id @default(uuid(7))
+  name    String
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@map("event_tags")
+}
+
+model Bookmark {
+  id        String   @id @default(uuid(7))
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, eventId])
+  @@index([userId])
+  @@index([eventId])
+  @@map("bookmarks")
+}

@@ -1,0 +1,25 @@
+model Payment {
+  id               String        @id @default(uuid(7))
+  status           PaymentStatus @default(PENDING)
+  gateway          PaymentGateway
+  amount           Float
+  currency         String        @default("USD")
+  transactionId    String?       @unique
+  gatewayRef       String?
+  metadata         Json?
+  
+  userId           String
+  user             User          @relation(fields: [userId], references: [id])
+  
+  eventId          String
+  event            Event         @relation(fields: [eventId], references: [id])
+  
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  participation    Participation?
+
+  @@index([userId])
+  @@index([eventId])
+  @@map("payments")
+}

@@ -1,0 +1,43 @@
+import { Router } from "express";
+import { Role } from "../../../../generated/prisma/enums";
+import { uploadBanner } from "../../config/multer.config";
+import { checkAuth } from "../../middleware/checkAuth";
+import { validateRequest } from "../../middleware/validateRequest";
+import { EventController } from "./event.controller";
+import { createEventZodSchema, updateEventZodSchema } from "./event.validation";
+
+const router = Router();
+
+// ─── Public Routes ───────────────────────────────────────────────────────────
+router.get("/featured", EventController.getFeaturedEvent);
+router.get("/upcoming", EventController.getUpcomingEvents);
+router.get("/", EventController.getAllEvents);
+router.get("/:id", EventController.getEventById);
+router.get("/:id/similar", EventController.getSimilarEvents);
+
+// ─── Authenticated User Routes ────────────────────────────────────────────────
+router.get("/me",
+    checkAuth(Role.ADMIN, Role.USER),
+    EventController.getMyEvents);
+
+router.post("/",
+    checkAuth(Role.ADMIN, Role.USER),
+    uploadBanner,
+    validateRequest(createEventZodSchema),
+    EventController.createEvent);
+
+router.patch("/:id",
+    checkAuth(Role.ADMIN, Role.USER),
+    uploadBanner,
+    validateRequest(updateEventZodSchema),
+    EventController.updateEvent);
+
+router.patch("/:id/publish",
+    checkAuth(Role.ADMIN, Role.USER),
+    EventController.publishEvent);
+
+router.delete("/:id",
+    checkAuth(Role.ADMIN, Role.USER),
+    EventController.deleteEvent);
+
+export const EventRoutes = router;

@@ -1,0 +1,85 @@
+model User {
+  id                 String     @id @default(uuid(7))
+  name               String
+  email              String     @unique
+  emailVerified      Boolean    @default(false)
+  role               Role       @default(USER)
+  status             UserStatus @default(ACTIVE)
+  needPasswordChange Boolean    @default(false)
+  
+  image              String?
+  bio                String?
+  
+  isActive           Boolean    @default(true)
+  isBanned           Boolean    @default(false)
+  bannedAt           DateTime?
+
+  isDeleted          Boolean    @default(false)
+  deletedAt          DateTime?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  sessions           Session[]
+  accounts           Account[]
+  
+  admin              Admin?
+
+  // Relations from Event Management ERD
+  organizedEvents     Event[]
+  participations      Participation[]
+  sentInvitations     Invitation[] @relation("SentInvitations")
+  receivedInvitations Invitation[] @relation("ReceivedInvitations")
+  payments            Payment[]
+  reviews             Review[]
+  bookmarks           Bookmark[]
+  activityLogs        ActivityLog[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid(7))
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(uuid(7))
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(uuid(7))
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
