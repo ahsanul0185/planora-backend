@@ -8,14 +8,9 @@ import { createEventZodSchema, updateEventZodSchema } from "./event.validation";
 
 const router = Router();
 
-// ─── Public Routes ───────────────────────────────────────────────────────────
 router.get("/featured", EventController.getFeaturedEvent);
 router.get("/upcoming", EventController.getUpcomingEvents);
-router.get("/", EventController.getAllEvents);
-router.get("/:id", EventController.getEventById);
-router.get("/:id/similar", EventController.getSimilarEvents);
 
-// ─── Authenticated User Routes ────────────────────────────────────────────────
 router.get("/me",
     checkAuth(Role.ADMIN, Role.USER),
     EventController.getMyEvents);
@@ -26,7 +21,12 @@ router.post("/",
     validateRequest(createEventZodSchema),
     EventController.createEvent);
 
-router.patch("/:id",
+router.get("/", EventController.getAllEvents);
+
+router.get("/:id", EventController.getEventById);
+router.get("/:id/similar", EventController.getSimilarEvents);
+
+router.put("/:id",
     checkAuth(Role.ADMIN, Role.USER),
     uploadBanner,
     validateRequest(updateEventZodSchema),

@@ -26,7 +26,6 @@ const createCategory = async (payload: ICreateCategoryPayload) => {
 const updateCategory = async (id: string, payload: IUpdateCategoryPayload) => {
     const existing = await prisma.eventCategory.findUniqueOrThrow({ where: { id } });
 
-    // If a new icon is uploaded and there was an old one, delete the old one from Cloudinary
     if (payload.icon && existing.icon && payload.icon !== existing.icon) {
         await deleteFileFromCloudinary(existing.icon).catch((err) =>
             console.warn("Could not delete old category icon from Cloudinary:", err)
@@ -46,7 +45,6 @@ const deleteCategory = async (id: string) => {
 
     await prisma.eventCategory.delete({ where: { id } });
 
-    // Delete the icon from Cloudinary after successful DB deletion
     if (existing.icon) {
         await deleteFileFromCloudinary(existing.icon).catch((err) =>
             console.warn("Could not delete category icon from Cloudinary:", err)

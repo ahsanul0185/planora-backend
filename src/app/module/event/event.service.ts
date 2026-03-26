@@ -1,6 +1,6 @@
-import slugify from "slugify";
 import status from "http-status";
 import { EventStatus, EventVisibility } from "../../../../generated/prisma/enums";
+import { deleteFileFromCloudinary } from "../../config/cloudinary.config";
 import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "../../interfaces/requestUser.interface";
 import { prisma } from "../../lib/prisma";
@@ -125,7 +125,6 @@ const getSimilarEvents = async (id: string) => {
     });
 };
 
-// ─── Host Mutations ───────────────────────────────────────────────────────────
 
 const createEvent = async (payload: ICreateEventPayload, user: IRequestUser) => {
     const { tags, ...eventData } = payload;
@@ -142,7 +141,7 @@ const createEvent = async (payload: ICreateEventPayload, user: IRequestUser) => 
             registrationDeadline: eventData.registrationDeadline
                 ? new Date(eventData.registrationDeadline)
                 : null,
-            status: EventStatus.DRAFT,
+            status: eventData.status,
             slug,
             organizerId: user.userId,
             tags: tags?.length
@@ -177,6 +176,13 @@ const updateEvent = async (id: string, payload: IUpdateEventPayload, user: IRequ
                 "Cannot change event fee from Free to Paid after participants have joined"
             );
         }
+    }
+
+    // If a new banner image is uploaded and there was an old one, delete the old one from Cloudinary
+    if (payload.bannerImage && existing.bannerImage && payload.bannerImage !== existing.bannerImage) {
+        await deleteFileFromCloudinary(existing.bannerImage).catch((err) =>
+            console.warn("Could not delete old event banner image from Cloudinary:", err)
+        );
     }
 
     const { tags, ...rest } = payload;

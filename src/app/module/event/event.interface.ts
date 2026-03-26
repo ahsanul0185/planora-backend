@@ -18,6 +18,7 @@ export interface ICreateEventPayload {
     registrationDeadline?: string;
     categoryId: string;
     tags?: string[];
+    status?: EventStatus;
 }
 
 export interface IUpdateEventPayload {

@@ -1,30 +1,44 @@
 import z from "zod";
-import { EventVisibility } from "../../../../generated/prisma/enums";
+import { EventStatus, EventVisibility } from "../../../../generated/prisma/enums";
+
+// Coerce string numbers to numbers and string booleans to booleans for form-data compatibility
+const booleanCoerce = z.preprocess((val) => {
+    if (typeof val === "string") {
+        if (val.toLowerCase() === "true") return true;
+        if (val.toLowerCase() === "false") return false;
+    }
+    return val;
+}, z.boolean());
+
+const numberCoerce = z.coerce.number();
 
 export const createEventZodSchema = z.object({
     title: z.string().min(3, "Title must be at least 3 characters").max(150, "Title too long"),
     description: z.string().optional(),
     bannerImage: z.string().url("Banner image must be a valid URL").optional(),
     visibility: z.enum([EventVisibility.PUBLIC, EventVisibility.PRIVATE]).default(EventVisibility.PUBLIC),
-    startDate: z.string().datetime("Invalid start date"),
-    endDate: z.string().datetime("Invalid end date"),
+    startDate: z.string().datetime({ message: "Must be a valid ISO datetime" }),
+    endDate: z.string().datetime({ message: "Must be a valid ISO datetime" }),
     timezone: z.string().default("UTC"),
-    isOnline: z.boolean().default(false),
+    isOnline: booleanCoerce.default(false),
     venueName: z.string().optional(),
     venueAddress: z.string().optional(),
     onlineLink: z.string().url("Online link must be a valid URL").optional(),
-    registrationFee: z.number().nonnegative("Fee cannot be negative").default(0),
+    registrationFee: numberCoerce.nonnegative("Fee cannot be negative").default(0),
     currency: z.string().default("USD"),
-    maxParticipants: z.number().int().positive().optional(),
-    registrationDeadline: z.string().datetime("Invalid registration deadline").optional(),
+    maxParticipants: numberCoerce.int().positive().optional(),
+    registrationDeadline: z.string().datetime().optional(),
     categoryId: z.string().uuid("Invalid category ID"),
-    tags: z.array(z.string()).optional(),
+    status: z.enum([EventStatus.DRAFT, EventStatus.PUBLISHED, EventStatus.CANCELLED, EventStatus.ENDED]).default(EventStatus.PUBLISHED),
+    tags: z.preprocess((val) => {
+        if (typeof val === "string") {
+            return val.split(",").map((t) => t.trim()).filter(Boolean);
+        }
+        return val;
+    }, z.array(z.string()).optional()),
 }).refine(
     (data) => new Date(data.startDate) < new Date(data.endDate),
     { message: "Start date must be before end date", path: ["endDate"] }
-).refine(
-    (data) => !data.registrationDeadline || new Date(data.registrationDeadline) <= new Date(data.startDate),
-    { message: "Registration deadline must be before or on the start date", path: ["registrationDeadline"] }
 );
 
 export const updateEventZodSchema = z.object({
@@ -35,14 +49,19 @@ export const updateEventZodSchema = z.object({
     startDate: z.string().datetime().optional(),
     endDate: z.string().datetime().optional(),
     timezone: z.string().optional(),
-    isOnline: z.boolean().optional(),
+    isOnline: booleanCoerce.optional(),
     venueName: z.string().optional(),
     venueAddress: z.string().optional(),
     onlineLink: z.string().url().optional(),
-    registrationFee: z.number().nonnegative().optional(),
+    registrationFee: numberCoerce.nonnegative().optional(),
     currency: z.string().optional(),
-    maxParticipants: z.number().int().positive().optional(),
+    maxParticipants: numberCoerce.int().positive().optional(),
     registrationDeadline: z.string().datetime().optional(),
     categoryId: z.string().uuid().optional(),
-    tags: z.array(z.string()).optional(),
+    tags: z.preprocess((val) => {
+        if (typeof val === "string") {
+            return val.split(",").map((t) => t.trim()).filter(Boolean);
+        }
+        return val;
+    }, z.array(z.string()).optional()),
 });
