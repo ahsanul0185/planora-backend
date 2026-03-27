@@ -15,7 +15,7 @@ router.post(
 
 router.get(
     "/me", 
-    checkAuth(Role.ADMIN, Role.USER), 
+    checkAuth(Role.ADMIN, Role.PARTICIPANT), 
     PaymentController.getMyPayments
 );
 

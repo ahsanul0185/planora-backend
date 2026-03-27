@@ -137,7 +137,8 @@ const changeUserRole = async (user: IRequestUser, payload: IChangeUserRolePayloa
                      email: userToChangeRole.email,
                  }
              });
-        } else if (role === Role.USER) {
+        } else if (role === Role.PARTICIPANT || role === Role.ORGANIZER) {
+             // Remove admin record when demoting from ADMIN
              await tx.admin.deleteMany({
                  where: { userId: userId }
              });

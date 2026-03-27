@@ -9,7 +9,7 @@ const router = Router();
 
 // Dashboard - my written reviews
 router.get("/me",
-    checkAuth(Role.USER, Role.ADMIN),
+    checkAuth(Role.PARTICIPANT, Role.ADMIN),
     ReviewController.getMyReviews);
 
 // All reviews for an event with average rating (public)
@@ -18,19 +18,19 @@ router.get("/events/:id",
 
 // Write review (only confirmed attendees, post-event)
 router.post("/events/:id",
-    checkAuth(Role.USER, Role.ADMIN),
+    checkAuth(Role.PARTICIPANT, Role.ADMIN),
     validateRequest(ReviewValidation.createReviewZodSchema),
     ReviewController.createReview);
 
 // Edit own review (within 7-day editDeadline)
 router.patch("/:reviewId",
-    checkAuth(Role.USER, Role.ADMIN),
+    checkAuth(Role.PARTICIPANT, Role.ADMIN),
     validateRequest(ReviewValidation.updateReviewZodSchema),
     ReviewController.updateReview);
 
 // Delete own review (within 7-day editDeadline)
 router.delete("/:reviewId",
-    checkAuth(Role.USER, Role.ADMIN),
+    checkAuth(Role.PARTICIPANT, Role.ADMIN),
     ReviewController.deleteReview);
 
 export const ReviewRoutes = router;
