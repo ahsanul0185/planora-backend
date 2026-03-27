@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { PaymentStatus, ParticipationStatus } from "../../../../generated/prisma/enums";
+import { PaymentStatus, ParticipationStatus, InvitationStatus } from "../../../../generated/prisma/enums";
 import { uploadFileToCloudinary } from "../../config/cloudinary.config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../config/stripe.config";
@@ -107,17 +107,27 @@ const handlerStripeWebhookEvent = async (event: Stripe.Event) => {
                 if (status === PaymentStatus.COMPLETED) {
                     let nextStatus: ParticipationStatus = ParticipationStatus.PENDING;
 
-                    if (type === "PUBLIC") {
+                    if (type === "PUBLIC" || type === "INVITATION_PAID") {
                         nextStatus = ParticipationStatus.CONFIRMED;
                     }
 
-                    await tx.participation.update({
+                    const updatedParticipation = await tx.participation.update({
                         where: { id: participationId },
                         data: {
                             status: nextStatus,
                             approvedAt: nextStatus === ParticipationStatus.CONFIRMED ? new Date() : null,
                         }
                     });
+
+                    if (type === "INVITATION_PAID" && updatedParticipation.invitationId) {
+                        await tx.invitation.update({
+                            where: { id: updatedParticipation.invitationId },
+                            data: {
+                                status: InvitationStatus.ACCEPTED,
+                                respondedAt: new Date()
+                            }
+                        });
+                    }
                 } else if (status === PaymentStatus.FAILED) {
                     await tx.participation.update({
                         where: { id: participationId },

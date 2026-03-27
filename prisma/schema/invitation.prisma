@@ -1,27 +1,29 @@
 model Invitation {
-  id              String           @id @default(uuid(7))
-  status          InvitationStatus @default(PENDING)
-  
-  senderId        String
-  sender          User             @relation("SentInvitations", fields: [senderId], references: [id], onDelete: Cascade)
-  
-  receiverId      String
-  receiver        User             @relation("ReceivedInvitations", fields: [receiverId], references: [id], onDelete: Cascade)
-  
-  eventId         String
-  event           Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  
-  expiresAt       DateTime
-  respondedAt     DateTime?
-  revokedAt       DateTime?
-  reminderSentAt  DateTime?
-  
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  id     String           @id @default(uuid(7))
+  status InvitationStatus @default(PENDING)
 
-  participation   Participation?
+  senderId String
+  sender   User   @relation("SentInvitations", fields: [senderId], references: [id], onDelete: Cascade)
+
+  receiverEmail String
+  receiverId    String?
+  receiver      User?   @relation("ReceivedInvitations", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  expiresAt      DateTime
+  respondedAt    DateTime?
+  revokedAt      DateTime?
+  reminderSentAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participation Participation?
 
   @@index([senderId])
+  @@index([receiverEmail])
   @@index([receiverId])
   @@index([eventId])
   @@map("invitations")

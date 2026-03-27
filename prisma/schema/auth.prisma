@@ -6,29 +6,29 @@ model User {
   role               Role       @default(USER)
   status             UserStatus @default(ACTIVE)
   needPasswordChange Boolean    @default(false)
-  
-  image              String?
-  bio                String?
-  
-  isActive           Boolean    @default(true)
-  isBanned           Boolean    @default(false)
-  bannedAt           DateTime?
 
-  isDeleted          Boolean    @default(false)
-  deletedAt          DateTime?
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
+  image String?
+  bio   String?
 
-  sessions           Session[]
-  accounts           Account[]
-  
-  admin              Admin?
+  isActive Boolean   @default(true)
+  isBanned Boolean   @default(false)
+  bannedAt DateTime?
+
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  sessions Session[]
+  accounts Account[]
+
+  admin Admin?
 
   // Relations from Event Management ERD
   organizedEvents     Event[]
   participations      Participation[]
-  sentInvitations     Invitation[] @relation("SentInvitations")
-  receivedInvitations Invitation[] @relation("ReceivedInvitations")
+  sentInvitations     Invitation[]    @relation("SentInvitations")
+  receivedInvitations Invitation[]    @relation("ReceivedInvitations")
   payments            Payment[]
   reviews             Review[]
   bookmarks           Bookmark[]

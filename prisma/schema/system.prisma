@@ -1,16 +1,16 @@
 model ActivityLog {
-  id        String   @id @default(uuid(7))
-  action    String
-  entity    String
-  entityId  String
-  metadata  Json?
-  
-  actorId   String
-  actor     User     @relation(fields: [actorId], references: [id])
-  
-  eventId   String?
-  event     Event?   @relation(fields: [eventId], references: [id])
-  
+  id       String @id @default(uuid(7))
+  action   String
+  entity   String
+  entityId String
+  metadata Json?
+
+  actorId String
+  actor   User   @relation(fields: [actorId], references: [id])
+
+  eventId String?
+  event   Event?  @relation(fields: [eventId], references: [id])
+
   createdAt DateTime @default(now())
 
   @@index([actorId])
@@ -20,12 +20,12 @@ model ActivityLog {
 }
 
 model PlatformSettings {
-  id                String   @id @default(uuid(7))
-  platformName      String   @default("Planora")
-  logoUrl           String?
-  maintenanceMode   Boolean  @default(false)
-  featuredEventId   String?
-  updatedAt         DateTime @updatedAt
+  id              String   @id @default(uuid(7))
+  platformName    String   @default("Planora")
+  logoUrl         String?
+  maintenanceMode Boolean  @default(false)
+  featuredEventId String?
+  updatedAt       DateTime @updatedAt
 
   @@map("platform_settings")
 }

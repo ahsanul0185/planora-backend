@@ -4,6 +4,7 @@ import { checkAuth } from "../../middleware/checkAuth";
 import { validateRequest } from "../../middleware/validateRequest";
 import { UserController } from "./user.controller";
 import { createAdminZodSchema } from "./user.validation";
+import { InvitationController } from "../invitation/invitation.controller";
 
 const router = Router();
 
@@ -14,6 +15,10 @@ router.get("/",
 router.get("/me/joined-events",
     checkAuth(Role.USER, Role.ADMIN),
     UserController.getMyJoinedEvents);
+
+router.get("/me/invitations",
+    checkAuth(Role.USER, Role.ADMIN),
+    InvitationController.getMyInvitations);
 
 router.get("/:id",
     checkAuth(Role.ADMIN),

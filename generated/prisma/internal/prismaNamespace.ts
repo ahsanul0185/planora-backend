@@ -1712,6 +1712,7 @@ export const InvitationScalarFieldEnum = {
   id: 'id',
   status: 'status',
   senderId: 'senderId',
+  receiverEmail: 'receiverEmail',
   receiverId: 'receiverId',
   eventId: 'eventId',
   expiresAt: 'expiresAt',

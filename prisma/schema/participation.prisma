@@ -1,28 +1,28 @@
 model Participation {
-  id             String              @id @default(uuid(7))
-  status         ParticipationStatus @default(PENDING)
-  joinedAt       DateTime            @default(now())
-  
-  userId         String
-  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  eventId        String
-  event          Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  
+  id       String              @id @default(uuid(7))
+  status   ParticipationStatus @default(PENDING)
+  joinedAt DateTime            @default(now())
+
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
   approvedAt     DateTime?
   rejectedAt     DateTime?
   rejectedReason String?
   bannedAt       DateTime?
   bannedReason   String?
   cancelledAt    DateTime?
-  
-  fromInvitation Boolean             @default(false)
-  invitationId   String?             @unique
-  invitation     Invitation?         @relation(fields: [invitationId], references: [id])
-  
-  paymentId      String?             @unique
-  payment        Payment?            @relation(fields: [paymentId], references: [id])
-  
-  updatedAt      DateTime            @updatedAt
+
+  fromInvitation Boolean     @default(false)
+  invitationId   String?     @unique
+  invitation     Invitation? @relation(fields: [invitationId], references: [id])
+
+  paymentId String?  @unique
+  payment   Payment? @relation(fields: [paymentId], references: [id])
+
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([eventId])
