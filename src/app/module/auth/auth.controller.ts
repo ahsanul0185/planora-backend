@@ -210,13 +210,23 @@ const resetPassword = catchAsync(
     }
 )
 
-// /api/v1/auth/login/google?redirect=/profile
+// /api/v1/auth/login/google?redirect=/profile&role=ORGANIZER
 const googleLogin = catchAsync((req: Request, res: Response) => {
     const redirectPath = req.query.redirect || "/dashboard";
+    const role = req.query.role as string || "PARTICIPANT";
 
     const encodedRedirectPath = encodeURIComponent(redirectPath as string);
 
     const callbackURL = `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success?redirect=${encodedRedirectPath}`;
+
+    // Store chosen role in a short-lived cookie (5 min) to survive the OAuth round-trip
+    res.cookie("oauth_role", role, {
+        httpOnly: true,
+        maxAge: 5 * 60 * 1000, // 5 minutes
+        sameSite: "none",
+        secure: true,
+        path: "/",
+    });
 
     res.render("googleRedirect", {
         callbackURL : callbackURL,
@@ -228,6 +238,9 @@ const googleLoginSuccess = catchAsync(async (req: Request, res: Response) => {
     const redirectPath = req.query.redirect as string || "/dashboard";
 
     const sessionToken = req.cookies["better-auth.session_token"];
+    // Read the role chosen before OAuth redirect, then clear the cookie
+    const oauthRole = req.cookies["oauth_role"] as string | undefined;
+    res.clearCookie("oauth_role", { path: "/" });
 
     if(!sessionToken){
         return res.redirect(`${envVars.FRONTEND_URL}/login?error=oauth_failed`);
@@ -243,18 +256,17 @@ const googleLoginSuccess = catchAsync(async (req: Request, res: Response) => {
         return res.redirect(`${envVars.FRONTEND_URL}/login?error=no_session_found`);
     }
 
-
     if(session && !session.user){
         return res.redirect(`${envVars.FRONTEND_URL}/login?error=no_user_found`);
     }
 
-    const result = await AuthService.googleLoginSuccess(session);
+    const result = await AuthService.googleLoginSuccess(session, oauthRole);
 
     const {accessToken, refreshToken} = result;
 
     tokenUtils.setAccessTokenCookie(res, accessToken);
     tokenUtils.setRefreshTokenCookie(res, refreshToken);
- // ?redirect=//profile -> /profile
+    // ?redirect=//profile -> /profile
     const isValidRedirectPath = redirectPath.startsWith("/") && !redirectPath.startsWith("//");
     const finalRedirectPath = isValidRedirectPath ? redirectPath : "/dashboard";
 

@@ -13,11 +13,11 @@ router.get("/",
     UserController.getAllUsers);
 
 router.get("/me/joined-events",
-    checkAuth(Role.PARTICIPANT, Role.ADMIN),
+    checkAuth(Role.PARTICIPANT, Role.ORGANIZER, Role.ADMIN),
     UserController.getMyJoinedEvents);
 
 router.get("/me/invitations",
-    checkAuth(Role.PARTICIPANT, Role.ADMIN),
+    checkAuth(Role.PARTICIPANT, Role.ORGANIZER, Role.ADMIN),
     InvitationController.getMyInvitations);
 
 router.get("/:id",

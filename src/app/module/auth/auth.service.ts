@@ -382,17 +382,35 @@ const resetPassword = async (email: string, otp: string, newPassword: string) =>
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const googleLoginSuccess = async (session: Record<string, any>) => {
+const googleLoginSuccess = async (session: Record<string, any>, oauthRole?: string) => {
+    let userRole = session.user.role;
+
+    // Check if user was created in the last 10 seconds (brand new account)
+    const isNewUser = (Date.now() - new Date(session.user.createdAt).getTime()) < 10000;
+
+    // Only update role for new users who chose a specific role during sign-up
+    if (isNewUser && oauthRole && (oauthRole === Role.PARTICIPANT || oauthRole === Role.ORGANIZER)) {
+        const updatedUser = await prisma.user.update({
+            where: { id: session.user.id },
+            data: { role: oauthRole as Role }
+        });
+        userRole = updatedUser.role;
+    }
+
     const accessToken = tokenUtils.getAccessToken({
         userId: session.user.id,
-        role: session.user.role,
+        role: userRole,
         name: session.user.name,
+        email: session.user.email,
+        status: session.user.status,
     });
 
     const refreshToken = tokenUtils.getRefreshToken({
         userId: session.user.id,
-        role: session.user.role,
+        role: userRole,
         name: session.user.name,
+        email: session.user.email,
+        status: session.user.status,
     });
 
     return {
