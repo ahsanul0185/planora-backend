@@ -50,7 +50,10 @@ const getMyJoinedEvents = catchAsync(async (req: Request, res: Response) => {
 
 const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
     const userId = req.user.userId;
-    const payload = req.body;
+    const payload = {
+        ...req.body,
+        image: req.file?.path ?? req.body.image,
+    };
     const result = await UserService.updateMyProfile(userId, payload);
 
     sendResponse(res, {

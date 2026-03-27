@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Role } from "../../../../generated/prisma/enums";
 import { checkAuth } from "../../middleware/checkAuth";
+import { uploadProfilePhoto } from "../../config/multer.config";
 import { validateRequest } from "../../middleware/validateRequest";
 import { UserController } from "./user.controller";
 import { createAdminZodSchema, updateProfileZodSchema } from "./user.validation";
@@ -20,8 +21,9 @@ router.get("/me/invitations",
     checkAuth(Role.PARTICIPANT, Role.ORGANIZER, Role.ADMIN),
     InvitationController.getMyInvitations);
 
-router.patch("/update-profile",
+router.put("/update-profile",
     checkAuth(Role.PARTICIPANT, Role.ORGANIZER, Role.ADMIN),
+    uploadProfilePhoto,
     validateRequest(updateProfileZodSchema),
     UserController.updateMyProfile);
 

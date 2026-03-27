@@ -59,3 +59,4 @@ export const uploadSingle = (fieldName: string) => multerUpload.single(fieldName
 export const uploadIcon = multerUpload.single("icon");
 export const uploadBanner = multerUpload.single("bannerImage");
 export const uploadFile = multerUpload.single("file");
+export const uploadProfilePhoto = multerUpload.single("image");
