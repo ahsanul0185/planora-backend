@@ -1,229 +1,163 @@
-// import status from "http-status";
-// import { PaymentStatus, Role } from "../../../generated/prisma/enums";
-// import AppError from "../../errorHelpers/AppError";
-// import { IRequestUser } from "../../interfaces/requestUser.interface";
-// import { prisma } from "../../lib/prisma";
-// import { ICreateReviewPayload, IUpdateReviewPayload } from "./review.interface";
+import status from "http-status";
+import { ParticipationStatus, Role } from "../../../../generated/prisma/enums";
+import AppError from "../../errorHelpers/AppError";
+import { IRequestUser } from "../../interfaces/requestUser.interface";
+import { prisma } from "../../lib/prisma";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
-// const giveReview = async (user : IRequestUser, payload : ICreateReviewPayload) => {
-//    const patientData = await prisma.patient.findUniqueOrThrow({
-//     where: {
-//         email : user.email
-//     }
-//    });
+const createReview = async (eventId: string, rating: number, body: string | undefined, user: IRequestUser) => {
+    // Check if event exists
+    const event = await prisma.event.findUnique({
+        where: { id: eventId }
+    });
 
-//    const appointmentData = await prisma.appointment.findUniqueOrThrow({
-//     where: {
-//         id : payload.appointmentId
-//     }   });
+    if (!event) {
+        throw new AppError(status.NOT_FOUND, "Event not found");
+    }
 
-//     if(appointmentData.paymentStatus !== PaymentStatus.PAID){
-//         throw new AppError(status.BAD_REQUEST, "You can only review after payment is done");
-//     };
+    // Must be past the start date
+    if (new Date() < event.startDate) {
+        throw new AppError(status.BAD_REQUEST, "You cannot review an event before it starts");
+    }
 
-//     if(appointmentData.patientId !== patientData.id){
-//         throw new AppError(status.BAD_REQUEST, "You can only review for your own appointments");
-//     };
+    // Must have a CONFIRMED participation
+    const participation = await prisma.participation.findFirst({
+        where: {
+            eventId,
+            userId: user.userId,
+            status: ParticipationStatus.CONFIRMED
+        }
+    });
 
-//     const isReviewed = await prisma.review.findFirst({
-//         where: {
-//             appointmentId : payload.appointmentId
-//         }
-//     });
+    if (!participation) {
+        throw new AppError(status.FORBIDDEN, "Only confirmed attendees can leave a review");
+    }
 
-//     if (isReviewed) {
-//         throw new AppError(status.BAD_REQUEST, "You have already reviewed for this appointment. You can update your review instead.");
-//     };   
+    // Must not have already reviewed
+    const existingReview = await prisma.review.findFirst({
+        where: {
+            eventId,
+            userId: user.userId,
+            deletedAt: null
+        }
+    });
 
-//     const result = await prisma.$transaction(async (tx) => {
-//         const review = await tx.review.create({
-//             data: {
-//                 ...payload,
-//                 patientId:appointmentData.patientId,
-//                 doctorId: appointmentData.doctorId
-//             }
-//         });
+    if (existingReview) {
+        throw new AppError(status.CONFLICT, "You have already reviewed this event");
+    }
 
-//         const averageRating = await tx.review.aggregate({
-//             where: {
-//                 doctorId: appointmentData.doctorId
-//             },
-//             _avg: {
-//                 rating: true
-//             }
-//         });
+    // Edit deadline is 7 days from now
+    const editDeadline = new Date();
+    editDeadline.setDate(editDeadline.getDate() + 7);
 
-//         await tx.doctor.update({
-//             where: {
-//                 id: appointmentData.doctorId
-//             },
-//             data: {
-//                 averageRating: averageRating._avg.rating as number
-//             }
-//         });
+    const review = await prisma.review.create({
+        data: {
+            rating,
+            body,
+            eventId,
+            userId: user.userId,
+            editDeadline
+        }
+    });
 
-//         return review;
-//     });
+    return review;
+};
 
-//     return result;
-// };
+const getEventReviews = async (eventId: string, queryParams: any) => {
+    // We only fetch active reviews
+    const builder = new QueryBuilder(prisma.review, queryParams, {
+        filterableFields: ["rating"],
+    })
+        .where({ eventId, deletedAt: null })
+        .sort()
+        .paginate()
+        .include({
+            user: { select: { id: true, name: true, image: true } }
+        });
 
-// const getAllReviews = async (
-// ) => {
-//     const reviews = await prisma.review.findMany({
-//         include: {
-//             doctor: true,
-//             patient: true,
-//             appointment: true
-//         }
-//     });
+    const result = await builder.execute();
 
-//     return reviews;
-// };
+    // Compute average rating
+    const aggregate = await prisma.review.aggregate({
+        where: { eventId, deletedAt: null },
+        _avg: {
+            rating: true
+        }
+    });
 
-// const myReviews = async (user: IRequestUser) => {
-//     const isUserExist = await prisma.user.findUnique({
-//         where: {
-//             email: user?.email
-//         }
-//     });
-//     if (!isUserExist) {
-//         throw new AppError(status.BAD_REQUEST, "Only patients can view their reviews");
-//     }
+    return {
+        ...result,
+        meta: {
+            ...result.meta,
+            averageRating: aggregate._avg.rating ? parseFloat(aggregate._avg.rating.toFixed(2)) : null
+        }
+    };
+};
 
-//     if (isUserExist.role === Role.DOCTOR) {
-//         const doctorData = await prisma.doctor.findUniqueOrThrow({
-//             where: {
-//                 email: user?.email
-//             }
-//         });
-//         return await prisma.review.findMany({
-//             where: {
-//                 doctorId: doctorData.id
-//             },
-//             include: {
-//                 patient: true,
-//                 appointment: true
-//             }
-//         });
-//     }
+const updateReview = async (reviewId: string, rating: number | undefined, body: string | undefined, user: IRequestUser) => {
+    const review = await prisma.review.findUnique({
+        where: { id: reviewId }
+    });
 
-//     if (isUserExist.role === Role.PATIENT) {
-//         const patientData = await prisma.patient.findUniqueOrThrow({
-//             where: {
-//                 email: user?.email
-//             }
-//         });
-//         return await prisma.review.findMany({
-//             where: {
-//                 patientId: patientData.id
-//             },
-//             include: {
-//                 doctor: true,
-//                 appointment: true
-//             }
-//         });
-//     }
-// };
+    if (!review || review.deletedAt) {
+        throw new AppError(status.NOT_FOUND, "Review not found");
+    }
 
-// const updateReview = async (user: IRequestUser, reviewId: string, payload: IUpdateReviewPayload) => {
-//     const patientData = await prisma.patient.findUniqueOrThrow({
-//         where: {
-//             email: user?.email
-//         }
-//     });
-//     const reviewData = await prisma.review.findUniqueOrThrow({
-//         where: {
-//             id: reviewId
-//         }
-//     });
-//     if (!(patientData.id === reviewData.patientId)) {
-//         throw new AppError(status.BAD_REQUEST, "This is not your review!")
-//     }
-//     const result = await prisma.$transaction(async (tx) => {
-//         const updatedReview = await tx.review.update({
-//             where: {
-//                 id: reviewId
-//             },
-//             data: {
-//                 ...payload
-//             }
-//         });
+    if (review.userId !== user.userId) {
+        throw new AppError(status.FORBIDDEN, "You can only edit your own reviews");
+    }
 
-//         const averageRating = await tx.review.aggregate({
-//             where: {
-//                 doctorId: reviewData.doctorId
-//             },
-//             _avg: {
-//                 rating: true
-//             }
-//         });
+    if (review.editDeadline && new Date() > review.editDeadline) {
+        throw new AppError(status.BAD_REQUEST, "The 7-day edit window for this review has expired");
+    }
 
-//         await tx.doctor.update({
-//             where: {
-//                 id: updatedReview.doctorId
-//             },
-//             data: {
-//                 averageRating: averageRating._avg.rating as number
-//             }
-//         })
+    return await prisma.review.update({
+        where: { id: reviewId },
+        data: { rating, body }
+    });
+};
 
-//         return updatedReview;
-//     });
+const deleteReview = async (reviewId: string, user: IRequestUser) => {
+    const review = await prisma.review.findUnique({
+        where: { id: reviewId }
+    });
 
-//     return result;
-// }
+    if (!review || review.deletedAt) {
+        throw new AppError(status.NOT_FOUND, "Review not found");
+    }
 
-// const deleteReview = async (user: IRequestUser, reviewId: string) => {
-//     const patientData = await prisma.patient.findUniqueOrThrow({
-//         where: {
-//             email: user?.email
-//         }
-//     });
-//     const reviewData = await prisma.review.findUniqueOrThrow({
-//         where: {
-//             id: reviewId
-//         }
-//     });
-//     if (!(patientData.id === reviewData.patientId)) {
-//         throw new AppError(status.BAD_REQUEST, "This is not your review!")
-//     }
+    if (review.userId !== user.userId) {
+        throw new AppError(status.FORBIDDEN, "You can only delete your own reviews");
+    }
 
-//     const result = await prisma.$transaction(async (tx) => {
-//         const deletedReview = await tx.review.delete({
-//             where: {
-//                 id: reviewId
-//             }
-//         });
+    if (review.editDeadline && new Date() > review.editDeadline) {
+        throw new AppError(status.BAD_REQUEST, "The 7-day edit window to delete this review has expired");
+    }
 
-//         const averageRating = await tx.review.aggregate({
-//             where: {
-//                 doctorId: deletedReview.doctorId
-//             },
-//             _avg: {
-//                 rating: true
-//             }
-//         });
+    return await prisma.review.update({
+        where: { id: reviewId },
+        data: { deletedAt: new Date() }
+    });
+};
 
-//         await tx.doctor.update({
-//             where: {
-//                 id: deletedReview.doctorId
-//             },
-//             data: {
-//                 averageRating: averageRating._avg.rating as number
-//             }
-//         })
-//         return deletedReview;
-//     });
+const getMyReviews = async (user: IRequestUser, queryParams: any) => {
+    const builder = new QueryBuilder(prisma.review, queryParams, {
+        filterableFields: ["rating"],
+    })
+        .where({ userId: user.userId, deletedAt: null })
+        .sort()
+        .paginate()
+        .include({
+            event: { select: { id: true, title: true, bannerImage: true, startDate: true } }
+        });
 
-//     return result;
-// }
+    return await builder.execute();
+};
 
-
-// export const ReviewService = {
-//     giveReview,
-//     getAllReviews,
-//     myReviews,
-//     updateReview,
-//     deleteReview
-// }
+export const ReviewService = {
+    createReview,
+    getEventReviews,
+    updateReview,
+    deleteReview,
+    getMyReviews
+};

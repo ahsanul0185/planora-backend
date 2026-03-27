@@ -1,28 +1,36 @@
-// import express from 'express';
-// import { Role } from '../../../../generated/prisma/enums';
-// import { checkAuth } from '../../middleware/checkAuth';
-// import { validateRequest } from '../../middleware/validateRequest';
-// import { ReviewController } from './review.controller';
-// import { ReviewValidation } from './review.validation';
+import { Router } from "express";
+import { Role } from "../../../../generated/prisma/enums";
+import { checkAuth } from "../../middleware/checkAuth";
+import { validateRequest } from "../../middleware/validateRequest";
+import { ReviewController } from "./review.controller";
+import { ReviewValidation } from "./review.validation";
 
-// const router = express.Router();
+const router = Router();
 
-// router.get('/', ReviewController.getAllReviews);
+// Dashboard - my written reviews
+router.get("/me",
+    checkAuth(Role.USER, Role.ADMIN),
+    ReviewController.getMyReviews);
 
-// router.post(
-//     '/',
-//     checkAuth(Role.PATIENT),
-//     validateRequest(ReviewValidation.createReviewZodSchema),
-//     ReviewController.giveReview
-// );
+// All reviews for an event with average rating (public)
+router.get("/events/:id",
+    ReviewController.getEventReviews);
 
-// router.get('/my-reviews', checkAuth(Role.PATIENT, Role.DOCTOR), ReviewController.myReviews);
+// Write review (only confirmed attendees, post-event)
+router.post("/events/:id",
+    checkAuth(Role.USER, Role.ADMIN),
+    validateRequest(ReviewValidation.createReviewZodSchema),
+    ReviewController.createReview);
 
-// router.patch('/:id', checkAuth(Role.PATIENT), validateRequest(ReviewValidation.updateReviewZodSchema), ReviewController.updateReview);
+// Edit own review (within 7-day editDeadline)
+router.patch("/:reviewId",
+    checkAuth(Role.USER, Role.ADMIN),
+    validateRequest(ReviewValidation.updateReviewZodSchema),
+    ReviewController.updateReview);
 
-// router.delete('/:id', checkAuth(Role.PATIENT), ReviewController.deleteReview);
+// Delete own review (within 7-day editDeadline)
+router.delete("/:reviewId",
+    checkAuth(Role.USER, Role.ADMIN),
+    ReviewController.deleteReview);
 
-
-
-
-// export const ReviewRoutes = router;
+export const ReviewRoutes = router;

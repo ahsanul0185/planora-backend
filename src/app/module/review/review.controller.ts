@@ -1,76 +1,71 @@
-// import { Request, Response } from "express";
-// import httpStatus from "http-status";
-// import { catchAsync } from "../../shared/catchAsync";
-// import { sendResponse } from "../../shared/sendResponse";
-// import { ReviewService } from "./review.service";
+import { Request, Response } from "express";
+import status from "http-status";
+import { catchAsync } from "../../shared/catchAsync";
+import { sendResponse } from "../../shared/sendResponse";
+import { ReviewService } from "./review.service";
 
-// const giveReview = catchAsync(async (req: Request, res: Response) => {
-//     const payload = req.body;
-//     const user = req.user;
-//     const result = await ReviewService.giveReview(user, payload);
-//     sendResponse(res, {
-//         httpStatusCode: httpStatus.OK,
-//         success: true,
-//         message: 'Review created successfully',
-//         data: result,
-//     });
-// });
+const createReview = catchAsync(async (req: Request, res: Response) => {
+    const eventId = req.params.id as string;
+    const { rating, body } = req.body;
+    const result = await ReviewService.createReview(eventId, rating, body, req.user);
+    sendResponse(res, {
+        httpStatusCode: status.CREATED,
+        success: true,
+        message: "Review submitted successfully",
+        data: result
+    });
+});
 
-// const getAllReviews = catchAsync(async (req: Request, res: Response) => {
+const getEventReviews = catchAsync(async (req: Request, res: Response) => {
+    const eventId = req.params.id as string;
+    const result = await ReviewService.getEventReviews(eventId, req.query);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Reviews retrieved successfully",
+        data: result.data,
+        meta: result.meta
+    });
+});
 
-//     const result = await ReviewService.getAllReviews();
-//     sendResponse(res, {
-//         httpStatusCode: httpStatus.OK,
-//         success: true,
-//         message: 'Reviews retrieval successfully',
-//         data: result
-//     });
-// });
+const updateReview = catchAsync(async (req: Request, res: Response) => {
+    const reviewId = req.params.reviewId as string;
+    const { rating, body } = req.body;
+    const result = await ReviewService.updateReview(reviewId, rating, body, req.user);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Review updated successfully",
+        data: result
+    });
+});
 
-// const myReviews = catchAsync(async (req: Request, res: Response) => {
-//     const user = req.user;
-//     const result = await ReviewService.myReviews(user);
-//     sendResponse(res, {
-//         httpStatusCode: httpStatus.OK,
-//         success: true,
-//         message: 'Reviews retrieval successfully',
-//         data: result
-//     });
+const deleteReview = catchAsync(async (req: Request, res: Response) => {
+    const reviewId = req.params.reviewId as string;
+    const result = await ReviewService.deleteReview(reviewId, req.user);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Review deleted successfully",
+        data: result
+    });
+});
 
-// });
+const getMyReviews = catchAsync(async (req: Request, res: Response) => {
+    const result = await ReviewService.getMyReviews(req.user, req.query);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Written reviews retrieved successfully",
+        data: result.data,
+        meta: result.meta
+    });
+});
 
-// const updateReview = catchAsync(async (req: Request, res: Response) => {
-//     const user = req.user;
-//     const reviewId = req.params.id;
-//     const payload = req.body;
-
-//     const result = await ReviewService.updateReview(user, reviewId as string, payload);
-//     sendResponse(res, {
-//         httpStatusCode: httpStatus.OK,
-//         success: true,
-//         message: 'Review updated successfully',
-//         data: result
-//     });
-// }
-// );
-
-// const deleteReview = catchAsync(async (req: Request, res: Response) => {
-//     const user = req.user;
-//     const reviewId = req.params.id;
-//     const result = await ReviewService.deleteReview(user, reviewId as string);
-//     sendResponse(res, {
-//         httpStatusCode: httpStatus.OK,
-//         success: true,
-//         message: 'Review deleted successfully',
-//         data: result
-//     });
-// });
-
-
-// export const ReviewController = {
-//     giveReview,
-//     getAllReviews,
-//     myReviews,
-//     updateReview,
-//     deleteReview
-// }
+export const ReviewController = {
+    createReview,
+    getEventReviews,
+    updateReview,
+    deleteReview,
+    getMyReviews
+};

@@ -1,14 +1,13 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-const createReviewZodSchema = z.object({
-    appointmentId: z.string("Appointment ID is required"),
-    rating: z.number("Rating is required").min(1, "Rating must be at least 1").max(5, "Rating cannot be more than 5"),
-    comment: z.string("Comment is required").min(1, "Comment cannot be empty")
+export const createReviewZodSchema = z.object({
+    rating: z.number().int().min(1).max(5, { message: "Rating must be between 1 and 5" }),
+    body: z.string().optional()
 });
 
-const updateReviewZodSchema = z.object({
-    rating: z.number("Rating is required").min(1, "Rating must be at least 1").max(5, "Rating cannot be more than 5").optional(),
-    comment: z.string("Comment is required").min(1, "Comment cannot be empty").optional()
+export const updateReviewZodSchema = z.object({
+    rating: z.number().int().min(1).max(5, { message: "Rating must be between 1 and 5" }).optional(),
+    body: z.string().optional()
 });
 
 export const ReviewValidation = {
