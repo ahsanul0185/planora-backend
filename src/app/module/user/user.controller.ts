@@ -48,9 +48,23 @@ const getMyJoinedEvents = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
+    const userId = req.user.userId;
+    const payload = req.body;
+    const result = await UserService.updateMyProfile(userId, payload);
+
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Profile updated successfully",
+        data: result,
+    });
+});
+
 export const UserController = {
     createAdmin,
     getAllUsers,
     getUserById,
-    getMyJoinedEvents
+    getMyJoinedEvents,
+    updateMyProfile,
 };

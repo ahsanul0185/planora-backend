@@ -3,7 +3,7 @@ import { Role } from "../../../../generated/prisma/enums";
 import AppError from "../../errorHelpers/AppError";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
-import { ICreateAdminPayload } from "./user.interface";
+import { ICreateAdminPayload, IUpdateProfilePayload } from "./user.interface";
 
 const createAdmin = async (payload: ICreateAdminPayload) => {
     const userExists = await prisma.user.findUnique({
@@ -93,9 +93,31 @@ const getMyJoinedEvents = async (userId: string) => {
     });
 };
 
+const updateMyProfile = async (userId: string, payload: IUpdateProfilePayload) => {
+    const user = await prisma.user.findUnique({
+        where: { id: userId }
+    });
+
+    if (!user) {
+        throw new AppError(status.NOT_FOUND, "User not found");
+    }
+
+    // Convert birthdate to Date object if provided
+    const updateData = {
+        ...payload,
+        birthdate: payload.birthdate ? new Date(payload.birthdate) : undefined
+    };
+
+    return await prisma.user.update({
+        where: { id: userId },
+        data: updateData
+    });
+};
+
 export const UserService = {
     createAdmin,
     getAllUsers,
     getUserById,
-    getMyJoinedEvents
+    getMyJoinedEvents,
+    updateMyProfile,
 };

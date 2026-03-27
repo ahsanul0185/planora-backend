@@ -12,7 +12,7 @@ import { tokenUtils } from "../../utils/token";
 import { IChangePasswordPayload, ILoginUserPayload, IRegisterUserPayload } from "./auth.interface";
 
 const registerUser = async (payload: IRegisterUserPayload) => {
-    const { name, email, password, role } = payload;
+    const { name, email, password, role, birthdate, gender, phoneNumber, address } = payload;
 
     const data = await auth.api.signUpEmail({
         body: {
@@ -20,6 +20,10 @@ const registerUser = async (payload: IRegisterUserPayload) => {
             email,
             password,
             role: role || Role.PARTICIPANT,
+            birthdate: birthdate ? new Date(birthdate) : undefined,
+            gender: gender || undefined,
+            phoneNumber: phoneNumber || undefined,
+            address: address || undefined,
         }
     })
 

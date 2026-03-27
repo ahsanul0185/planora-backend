@@ -34,6 +34,10 @@ export type UserMinAggregateOutputType = {
   needPasswordChange: boolean | null
   image: string | null
   bio: string | null
+  birthdate: Date | null
+  gender: $Enums.Gender | null
+  phoneNumber: string | null
+  address: string | null
   isActive: boolean | null
   isBanned: boolean | null
   bannedAt: Date | null
@@ -53,6 +57,10 @@ export type UserMaxAggregateOutputType = {
   needPasswordChange: boolean | null
   image: string | null
   bio: string | null
+  birthdate: Date | null
+  gender: $Enums.Gender | null
+  phoneNumber: string | null
+  address: string | null
   isActive: boolean | null
   isBanned: boolean | null
   bannedAt: Date | null
@@ -72,6 +80,10 @@ export type UserCountAggregateOutputType = {
   needPasswordChange: number
   image: number
   bio: number
+  birthdate: number
+  gender: number
+  phoneNumber: number
+  address: number
   isActive: number
   isBanned: number
   bannedAt: number
@@ -93,6 +105,10 @@ export type UserMinAggregateInputType = {
   needPasswordChange?: true
   image?: true
   bio?: true
+  birthdate?: true
+  gender?: true
+  phoneNumber?: true
+  address?: true
   isActive?: true
   isBanned?: true
   bannedAt?: true
@@ -112,6 +128,10 @@ export type UserMaxAggregateInputType = {
   needPasswordChange?: true
   image?: true
   bio?: true
+  birthdate?: true
+  gender?: true
+  phoneNumber?: true
+  address?: true
   isActive?: true
   isBanned?: true
   bannedAt?: true
@@ -131,6 +151,10 @@ export type UserCountAggregateInputType = {
   needPasswordChange?: true
   image?: true
   bio?: true
+  birthdate?: true
+  gender?: true
+  phoneNumber?: true
+  address?: true
   isActive?: true
   isBanned?: true
   bannedAt?: true
@@ -223,6 +247,10 @@ export type UserGroupByOutputType = {
   needPasswordChange: boolean
   image: string | null
   bio: string | null
+  birthdate: Date | null
+  gender: $Enums.Gender | null
+  phoneNumber: string | null
+  address: string | null
   isActive: boolean
   isBanned: boolean
   bannedAt: Date | null
@@ -263,6 +291,10 @@ export type UserWhereInput = {
   needPasswordChange?: Prisma.BoolFilter<"User"> | boolean
   image?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
+  birthdate?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
+  phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
+  address?: Prisma.StringNullableFilter<"User"> | string | null
   isActive?: Prisma.BoolFilter<"User"> | boolean
   isBanned?: Prisma.BoolFilter<"User"> | boolean
   bannedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
@@ -293,6 +325,10 @@ export type UserOrderByWithRelationInput = {
   needPasswordChange?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
+  birthdate?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
   bannedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -326,6 +362,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   needPasswordChange?: Prisma.BoolFilter<"User"> | boolean
   image?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
+  birthdate?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
+  phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
+  address?: Prisma.StringNullableFilter<"User"> | string | null
   isActive?: Prisma.BoolFilter<"User"> | boolean
   isBanned?: Prisma.BoolFilter<"User"> | boolean
   bannedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
@@ -356,6 +396,10 @@ export type UserOrderByWithAggregationInput = {
   needPasswordChange?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
+  birthdate?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
   bannedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -381,6 +425,10 @@ export type UserScalarWhereWithAggregatesInput = {
   needPasswordChange?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  birthdate?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  gender?: Prisma.EnumGenderNullableWithAggregatesFilter<"User"> | $Enums.Gender | null
+  phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  address?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   isBanned?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   bannedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -400,6 +448,10 @@ export type UserCreateInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -430,6 +482,10 @@ export type UserUncheckedCreateInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -460,6 +516,10 @@ export type UserUpdateInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -490,6 +550,10 @@ export type UserUncheckedUpdateInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -520,6 +584,10 @@ export type UserCreateManyInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -539,6 +607,10 @@ export type UserUpdateManyMutationInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -558,6 +630,10 @@ export type UserUncheckedUpdateManyInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -582,6 +658,10 @@ export type UserCountOrderByAggregateInput = {
   needPasswordChange?: Prisma.SortOrder
   image?: Prisma.SortOrder
   bio?: Prisma.SortOrder
+  birthdate?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
   bannedAt?: Prisma.SortOrder
@@ -601,6 +681,10 @@ export type UserMaxOrderByAggregateInput = {
   needPasswordChange?: Prisma.SortOrder
   image?: Prisma.SortOrder
   bio?: Prisma.SortOrder
+  birthdate?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
   bannedAt?: Prisma.SortOrder
@@ -620,6 +704,10 @@ export type UserMinOrderByAggregateInput = {
   needPasswordChange?: Prisma.SortOrder
   image?: Prisma.SortOrder
   bio?: Prisma.SortOrder
+  birthdate?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
   bannedAt?: Prisma.SortOrder
@@ -654,6 +742,10 @@ export type EnumRoleFieldUpdateOperationsInput = {
 
 export type EnumUserStatusFieldUpdateOperationsInput = {
   set?: $Enums.UserStatus
+}
+
+export type NullableEnumGenderFieldUpdateOperationsInput = {
+  set?: $Enums.Gender | null
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -808,6 +900,10 @@ export type UserCreateWithoutAdminInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -837,6 +933,10 @@ export type UserUncheckedCreateWithoutAdminInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -882,6 +982,10 @@ export type UserUpdateWithoutAdminInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -911,6 +1015,10 @@ export type UserUncheckedUpdateWithoutAdminInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -940,6 +1048,10 @@ export type UserCreateWithoutSessionsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -969,6 +1081,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1014,6 +1130,10 @@ export type UserUpdateWithoutSessionsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1043,6 +1163,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1072,6 +1196,10 @@ export type UserCreateWithoutAccountsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1101,6 +1229,10 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1146,6 +1278,10 @@ export type UserUpdateWithoutAccountsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1175,6 +1311,10 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1204,6 +1344,10 @@ export type UserCreateWithoutOrganizedEventsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1233,6 +1377,10 @@ export type UserUncheckedCreateWithoutOrganizedEventsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1278,6 +1426,10 @@ export type UserUpdateWithoutOrganizedEventsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1307,6 +1459,10 @@ export type UserUncheckedUpdateWithoutOrganizedEventsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1336,6 +1492,10 @@ export type UserCreateWithoutBookmarksInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1365,6 +1525,10 @@ export type UserUncheckedCreateWithoutBookmarksInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1410,6 +1574,10 @@ export type UserUpdateWithoutBookmarksInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1439,6 +1607,10 @@ export type UserUncheckedUpdateWithoutBookmarksInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1468,6 +1640,10 @@ export type UserCreateWithoutSentInvitationsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1497,6 +1673,10 @@ export type UserUncheckedCreateWithoutSentInvitationsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1531,6 +1711,10 @@ export type UserCreateWithoutReceivedInvitationsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1560,6 +1744,10 @@ export type UserUncheckedCreateWithoutReceivedInvitationsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1605,6 +1793,10 @@ export type UserUpdateWithoutSentInvitationsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1634,6 +1826,10 @@ export type UserUncheckedUpdateWithoutSentInvitationsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1674,6 +1870,10 @@ export type UserUpdateWithoutReceivedInvitationsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1703,6 +1903,10 @@ export type UserUncheckedUpdateWithoutReceivedInvitationsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1732,6 +1936,10 @@ export type UserCreateWithoutParticipationsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1761,6 +1969,10 @@ export type UserUncheckedCreateWithoutParticipationsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1806,6 +2018,10 @@ export type UserUpdateWithoutParticipationsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1835,6 +2051,10 @@ export type UserUncheckedUpdateWithoutParticipationsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1864,6 +2084,10 @@ export type UserCreateWithoutPaymentsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1893,6 +2117,10 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -1938,6 +2166,10 @@ export type UserUpdateWithoutPaymentsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1967,6 +2199,10 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1996,6 +2232,10 @@ export type UserCreateWithoutReviewsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -2025,6 +2265,10 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -2070,6 +2314,10 @@ export type UserUpdateWithoutReviewsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2099,6 +2347,10 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2128,6 +2380,10 @@ export type UserCreateWithoutActivityLogsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -2157,6 +2413,10 @@ export type UserUncheckedCreateWithoutActivityLogsInput = {
   needPasswordChange?: boolean
   image?: string | null
   bio?: string | null
+  birthdate?: Date | string | null
+  gender?: $Enums.Gender | null
+  phoneNumber?: string | null
+  address?: string | null
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: Date | string | null
@@ -2202,6 +2462,10 @@ export type UserUpdateWithoutActivityLogsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2231,6 +2495,10 @@ export type UserUncheckedUpdateWithoutActivityLogsInput = {
   needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bannedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2372,6 +2640,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   needPasswordChange?: boolean
   image?: boolean
   bio?: boolean
+  birthdate?: boolean
+  gender?: boolean
+  phoneNumber?: boolean
+  address?: boolean
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: boolean
@@ -2403,6 +2675,10 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   needPasswordChange?: boolean
   image?: boolean
   bio?: boolean
+  birthdate?: boolean
+  gender?: boolean
+  phoneNumber?: boolean
+  address?: boolean
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: boolean
@@ -2422,6 +2698,10 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   needPasswordChange?: boolean
   image?: boolean
   bio?: boolean
+  birthdate?: boolean
+  gender?: boolean
+  phoneNumber?: boolean
+  address?: boolean
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: boolean
@@ -2441,6 +2721,10 @@ export type UserSelectScalar = {
   needPasswordChange?: boolean
   image?: boolean
   bio?: boolean
+  birthdate?: boolean
+  gender?: boolean
+  phoneNumber?: boolean
+  address?: boolean
   isActive?: boolean
   isBanned?: boolean
   bannedAt?: boolean
@@ -2450,7 +2734,7 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "role" | "status" | "needPasswordChange" | "image" | "bio" | "isActive" | "isBanned" | "bannedAt" | "isDeleted" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "role" | "status" | "needPasswordChange" | "image" | "bio" | "birthdate" | "gender" | "phoneNumber" | "address" | "isActive" | "isBanned" | "bannedAt" | "isDeleted" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -2493,6 +2777,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     needPasswordChange: boolean
     image: string | null
     bio: string | null
+    birthdate: Date | null
+    gender: $Enums.Gender | null
+    phoneNumber: string | null
+    address: string | null
     isActive: boolean
     isBanned: boolean
     bannedAt: Date | null
@@ -2943,6 +3231,10 @@ export interface UserFieldRefs {
   readonly needPasswordChange: Prisma.FieldRef<"User", 'Boolean'>
   readonly image: Prisma.FieldRef<"User", 'String'>
   readonly bio: Prisma.FieldRef<"User", 'String'>
+  readonly birthdate: Prisma.FieldRef<"User", 'DateTime'>
+  readonly gender: Prisma.FieldRef<"User", 'Gender'>
+  readonly phoneNumber: Prisma.FieldRef<"User", 'String'>
+  readonly address: Prisma.FieldRef<"User", 'String'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
   readonly isBanned: Prisma.FieldRef<"User", 'Boolean'>
   readonly bannedAt: Prisma.FieldRef<"User", 'DateTime'>

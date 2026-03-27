@@ -10,6 +10,11 @@ model User {
   image String?
   bio   String?
 
+  birthdate   DateTime?
+  gender      Gender?
+  phoneNumber String?
+  address     String?
+
   isActive Boolean   @default(true)
   isBanned Boolean   @default(false)
   bannedAt DateTime?

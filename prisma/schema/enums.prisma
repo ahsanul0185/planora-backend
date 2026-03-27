@@ -10,6 +10,12 @@ enum UserStatus {
   DELETED
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
 enum EventStatus {
   DRAFT
   PUBLISHED

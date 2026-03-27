@@ -63,6 +63,30 @@ export const auth = betterAuth({
                 defaultValue: false
             },
 
+            birthdate: {
+                type: "date",
+                required: false,
+                defaultValue: null
+            },
+
+            gender: {
+                type: "string",
+                required: false,
+                defaultValue: null
+            },
+
+            phoneNumber: {
+                type: "string",
+                required: false,
+                defaultValue: null
+            },
+
+            address: {
+                type: "string",
+                required: false,
+                defaultValue: null
+            },
+
             isDeleted: {
                 type: "boolean",
                 required: true,

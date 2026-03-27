@@ -9,3 +9,13 @@ export const createAdminZodSchema = z.object({
         profilePhoto: z.string().url("Profile photo must be a valid URL").optional(),
     })
 });
+
+export const updateProfileZodSchema = z.object({
+    name: z.string().min(3, "Name must be at least 3 characters").max(50, "Name must be at most 50 characters").optional(),
+    image: z.string().url("Image must be a valid URL").optional(),
+    bio: z.string().max(200, "Bio must be at most 200 characters").optional(),
+    birthdate: z.string().datetime({ message: "Invalid birthdate format (ISO string expected)" }).optional(),
+    gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional(),
+    phoneNumber: z.string().min(10, "Phone number must be at least 10 characters").optional(),
+    address: z.string().optional(),
+});
