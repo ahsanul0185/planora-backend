@@ -24,6 +24,26 @@ const requestPrivateFreeEvent = catchAsync(async (req: Request, res: Response) =
     });
 });
 
+const joinPublicPaidEvent = catchAsync(async (req: Request, res: Response) => {
+    const result = await ParticipationService.joinPublicPaidEvent(req.params.eventId as string, req.user);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Payment session generated successfully",
+        data: result,
+    });
+});
+
+const requestPrivatePaidEvent = catchAsync(async (req: Request, res: Response) => {
+    const result = await ParticipationService.requestPrivatePaidEvent(req.params.eventId as string, req.user);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Payment session generated successfully",
+        data: result,
+    });
+});
+
 const getEventParticipants = catchAsync(async (req: Request, res: Response) => {
     const result = await ParticipationService.getEventParticipants(req.params.eventId as string, req.user, req.query as any);
     sendResponse(res, {
@@ -73,6 +93,8 @@ const cancelParticipation = catchAsync(async (req: Request, res: Response) => {
 export const ParticipationController = {
     joinPublicFreeEvent,
     requestPrivateFreeEvent,
+    joinPublicPaidEvent,
+    requestPrivatePaidEvent,
     getEventParticipants,
     exportParticipantsAsCSV,
     updateParticipationStatus,

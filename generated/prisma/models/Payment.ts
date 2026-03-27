@@ -42,6 +42,7 @@ export type PaymentMinAggregateOutputType = {
   currency: string | null
   transactionId: string | null
   gatewayRef: string | null
+  invoiceUrl: string | null
   userId: string | null
   eventId: string | null
   createdAt: Date | null
@@ -56,6 +57,7 @@ export type PaymentMaxAggregateOutputType = {
   currency: string | null
   transactionId: string | null
   gatewayRef: string | null
+  invoiceUrl: string | null
   userId: string | null
   eventId: string | null
   createdAt: Date | null
@@ -70,6 +72,7 @@ export type PaymentCountAggregateOutputType = {
   currency: number
   transactionId: number
   gatewayRef: number
+  invoiceUrl: number
   metadata: number
   userId: number
   eventId: number
@@ -95,6 +98,7 @@ export type PaymentMinAggregateInputType = {
   currency?: true
   transactionId?: true
   gatewayRef?: true
+  invoiceUrl?: true
   userId?: true
   eventId?: true
   createdAt?: true
@@ -109,6 +113,7 @@ export type PaymentMaxAggregateInputType = {
   currency?: true
   transactionId?: true
   gatewayRef?: true
+  invoiceUrl?: true
   userId?: true
   eventId?: true
   createdAt?: true
@@ -123,6 +128,7 @@ export type PaymentCountAggregateInputType = {
   currency?: true
   transactionId?: true
   gatewayRef?: true
+  invoiceUrl?: true
   metadata?: true
   userId?: true
   eventId?: true
@@ -225,6 +231,7 @@ export type PaymentGroupByOutputType = {
   currency: string
   transactionId: string | null
   gatewayRef: string | null
+  invoiceUrl: string | null
   metadata: runtime.JsonValue | null
   userId: string
   eventId: string
@@ -263,6 +270,7 @@ export type PaymentWhereInput = {
   currency?: Prisma.StringFilter<"Payment"> | string
   transactionId?: Prisma.StringNullableFilter<"Payment"> | string | null
   gatewayRef?: Prisma.StringNullableFilter<"Payment"> | string | null
+  invoiceUrl?: Prisma.StringNullableFilter<"Payment"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Payment">
   userId?: Prisma.StringFilter<"Payment"> | string
   eventId?: Prisma.StringFilter<"Payment"> | string
@@ -281,6 +289,7 @@ export type PaymentOrderByWithRelationInput = {
   currency?: Prisma.SortOrder
   transactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   gatewayRef?: Prisma.SortOrderInput | Prisma.SortOrder
+  invoiceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
@@ -302,6 +311,7 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   amount?: Prisma.FloatFilter<"Payment"> | number
   currency?: Prisma.StringFilter<"Payment"> | string
   gatewayRef?: Prisma.StringNullableFilter<"Payment"> | string | null
+  invoiceUrl?: Prisma.StringNullableFilter<"Payment"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Payment">
   userId?: Prisma.StringFilter<"Payment"> | string
   eventId?: Prisma.StringFilter<"Payment"> | string
@@ -320,6 +330,7 @@ export type PaymentOrderByWithAggregationInput = {
   currency?: Prisma.SortOrder
   transactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   gatewayRef?: Prisma.SortOrderInput | Prisma.SortOrder
+  invoiceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
@@ -343,6 +354,7 @@ export type PaymentScalarWhereWithAggregatesInput = {
   currency?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   transactionId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
   gatewayRef?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
+  invoiceUrl?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"Payment">
   userId?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   eventId?: Prisma.StringWithAggregatesFilter<"Payment"> | string
@@ -358,6 +370,7 @@ export type PaymentCreateInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -374,6 +387,7 @@ export type PaymentUncheckedCreateInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId: string
   eventId: string
@@ -390,6 +404,7 @@ export type PaymentUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -406,6 +421,7 @@ export type PaymentUncheckedUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -422,6 +438,7 @@ export type PaymentCreateManyInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId: string
   eventId: string
@@ -437,6 +454,7 @@ export type PaymentUpdateManyMutationInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -450,6 +468,7 @@ export type PaymentUncheckedUpdateManyInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -480,6 +499,7 @@ export type PaymentCountOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   gatewayRef?: Prisma.SortOrder
+  invoiceUrl?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
@@ -499,6 +519,7 @@ export type PaymentMaxOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   gatewayRef?: Prisma.SortOrder
+  invoiceUrl?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -513,6 +534,7 @@ export type PaymentMinOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   gatewayRef?: Prisma.SortOrder
+  invoiceUrl?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -639,6 +661,7 @@ export type PaymentCreateWithoutUserInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -654,6 +677,7 @@ export type PaymentUncheckedCreateWithoutUserInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   eventId: string
   createdAt?: Date | string
@@ -698,6 +722,7 @@ export type PaymentScalarWhereInput = {
   currency?: Prisma.StringFilter<"Payment"> | string
   transactionId?: Prisma.StringNullableFilter<"Payment"> | string | null
   gatewayRef?: Prisma.StringNullableFilter<"Payment"> | string | null
+  invoiceUrl?: Prisma.StringNullableFilter<"Payment"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Payment">
   userId?: Prisma.StringFilter<"Payment"> | string
   eventId?: Prisma.StringFilter<"Payment"> | string
@@ -713,6 +738,7 @@ export type PaymentCreateWithoutEventInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -728,6 +754,7 @@ export type PaymentUncheckedCreateWithoutEventInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId: string
   createdAt?: Date | string
@@ -769,6 +796,7 @@ export type PaymentCreateWithoutParticipationInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -784,6 +812,7 @@ export type PaymentUncheckedCreateWithoutParticipationInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId: string
   eventId: string
@@ -815,6 +844,7 @@ export type PaymentUpdateWithoutParticipationInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -830,6 +860,7 @@ export type PaymentUncheckedUpdateWithoutParticipationInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -845,6 +876,7 @@ export type PaymentCreateManyUserInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   eventId: string
   createdAt?: Date | string
@@ -859,6 +891,7 @@ export type PaymentUpdateWithoutUserInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -874,6 +907,7 @@ export type PaymentUncheckedUpdateWithoutUserInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -889,6 +923,7 @@ export type PaymentUncheckedUpdateManyWithoutUserInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -903,6 +938,7 @@ export type PaymentCreateManyEventInput = {
   currency?: string
   transactionId?: string | null
   gatewayRef?: string | null
+  invoiceUrl?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId: string
   createdAt?: Date | string
@@ -917,6 +953,7 @@ export type PaymentUpdateWithoutEventInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -932,6 +969,7 @@ export type PaymentUncheckedUpdateWithoutEventInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -947,6 +985,7 @@ export type PaymentUncheckedUpdateManyWithoutEventInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  invoiceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -963,6 +1002,7 @@ export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   currency?: boolean
   transactionId?: boolean
   gatewayRef?: boolean
+  invoiceUrl?: boolean
   metadata?: boolean
   userId?: boolean
   eventId?: boolean
@@ -981,6 +1021,7 @@ export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   currency?: boolean
   transactionId?: boolean
   gatewayRef?: boolean
+  invoiceUrl?: boolean
   metadata?: boolean
   userId?: boolean
   eventId?: boolean
@@ -998,6 +1039,7 @@ export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   currency?: boolean
   transactionId?: boolean
   gatewayRef?: boolean
+  invoiceUrl?: boolean
   metadata?: boolean
   userId?: boolean
   eventId?: boolean
@@ -1015,6 +1057,7 @@ export type PaymentSelectScalar = {
   currency?: boolean
   transactionId?: boolean
   gatewayRef?: boolean
+  invoiceUrl?: boolean
   metadata?: boolean
   userId?: boolean
   eventId?: boolean
@@ -1022,7 +1065,7 @@ export type PaymentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "status" | "gateway" | "amount" | "currency" | "transactionId" | "gatewayRef" | "metadata" | "userId" | "eventId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "status" | "gateway" | "amount" | "currency" | "transactionId" | "gatewayRef" | "invoiceUrl" | "metadata" | "userId" | "eventId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
 export type PaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
@@ -1052,6 +1095,7 @@ export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     currency: string
     transactionId: string | null
     gatewayRef: string | null
+    invoiceUrl: string | null
     metadata: runtime.JsonValue | null
     userId: string
     eventId: string
@@ -1490,6 +1534,7 @@ export interface PaymentFieldRefs {
   readonly currency: Prisma.FieldRef<"Payment", 'String'>
   readonly transactionId: Prisma.FieldRef<"Payment", 'String'>
   readonly gatewayRef: Prisma.FieldRef<"Payment", 'String'>
+  readonly invoiceUrl: Prisma.FieldRef<"Payment", 'String'>
   readonly metadata: Prisma.FieldRef<"Payment", 'Json'>
   readonly userId: Prisma.FieldRef<"Payment", 'String'>
   readonly eventId: Prisma.FieldRef<"Payment", 'String'>

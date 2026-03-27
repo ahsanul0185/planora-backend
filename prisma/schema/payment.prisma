@@ -6,6 +6,7 @@ model Payment {
   currency         String        @default("USD")
   transactionId    String?       @unique
   gatewayRef       String?
+  invoiceUrl       String?
   metadata         Json?
   
   userId           String

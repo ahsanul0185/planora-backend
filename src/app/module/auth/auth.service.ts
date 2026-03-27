@@ -7,6 +7,7 @@ import { IRequestUser } from "../../interfaces/requestUser.interface";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 import { jwtUtils } from "../../utils/jwt";
+import { sendEmail } from "../../utils/email";
 import { tokenUtils } from "../../utils/token";
 import { IChangePasswordPayload, ILoginUserPayload, IRegisterUserPayload } from "./auth.interface";
 
@@ -258,15 +259,32 @@ const verifyEmail = async (email: string, otp: string) => {
         }
     })
 
-    if (result.status && !result.user.emailVerified) {
-        await prisma.user.update({
-            where: {
-                email,
-            },
-            data: {
-                emailVerified: true,
+    if (result.status) {
+        // Better Auth already updated the user in the DB.
+        // We fetch the user specifically to ensure we have the name for the email.
+        const user = await prisma.user.findUnique({
+            where: { email }
+        });
+
+        if (user) {
+            // Send Welcome Email
+            try {
+                await sendEmail({
+                    to: user.email,
+                    subject: "Welcome to Planora!",
+                    templateName: "welcome",
+                    templateData: {
+                        name: user.name,
+                        email: user.email,
+                        dashboardUrl: `${envVars.FRONTEND_URL}/dashboard`,
+                    }
+                })
+                console.log(`Welcome email sent to ${user.email}`);
+            } catch (emailError) {
+                console.error("Error sending welcome email:", emailError);
+                // Non-blocking error
             }
-        })
+        }
     }
 }
 

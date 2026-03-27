@@ -2,12 +2,14 @@ import PDFDocument from 'pdfkit';
 
 interface InvoiceData {
     invoiceId: string;
-    patientName: string;
-    patientEmail: string;
-    doctorName: string;
-    appointmentDate: string;
+    attendeeName: string;
+    attendeeEmail: string;
+    eventTitle: string;
+    eventDate: string;
     amount: number;
+    currency: string;
     transactionId: string;
+    gatewayRef: string;
     paymentDate: string;
 }
 
@@ -34,77 +36,63 @@ export const generateInvoicePdf = async (data: InvoiceData): Promise<Buffer> => 
             });
 
             // Header
-            doc.fontSize(24).font('Helvetica-Bold').text('INVOICE', {
-                align: 'center',
-            });
+            doc.fontSize(24).font('Helvetica-Bold').text('INVOICE', { align: 'center' });
 
             doc.moveDown(0.5);
             doc
                 .fontSize(10)
                 .font('Helvetica')
-                .text('PH Healthcare Services', {
-                    align: 'center',
-                });
-            doc.text('Your Health, Our Priority', { align: 'center' });
+                .text('Planora - Event Management Platform', { align: 'center' });
+            doc.text('Plan. Attend. Experience.', { align: 'center' });
 
             doc.moveDown(1);
 
             // Horizontal line
             doc.moveTo(50, doc.y).lineTo(545, doc.y).stroke();
-
             doc.moveDown(1);
 
-            // Invoice Details - Left Column
+            // Invoice Information
             doc.fontSize(11).font('Helvetica-Bold').text('Invoice Information');
             doc
                 .fontSize(10)
                 .font('Helvetica')
                 .text(`Invoice ID: ${data.invoiceId}`)
                 .text(`Payment Date: ${new Date(data.paymentDate).toLocaleDateString()}`)
-                .text(`Transaction ID: ${data.transactionId}`);
+                .text(`Transaction ID: ${data.transactionId}`)
+                .text(`Session Ref: ${data.gatewayRef}`);
 
             doc.moveDown(0.8);
 
-            // Patient Information
-            doc.fontSize(11).font('Helvetica-Bold').text('Patient Information');
+            // Attendee Information
+            doc.fontSize(11).font('Helvetica-Bold').text('Attendee Information');
             doc
                 .fontSize(10)
                 .font('Helvetica')
-                .text(`Name: ${data.patientName}`)
-                .text(`Email: ${data.patientEmail}`);
+                .text(`Name: ${data.attendeeName}`)
+                .text(`Email: ${data.attendeeEmail}`);
 
             doc.moveDown(0.8);
 
-            // Doctor Information
-            doc.fontSize(11).font('Helvetica-Bold').text('Doctor Information');
+            // Event Details
+            doc.fontSize(11).font('Helvetica-Bold').text('Event Details');
             doc
                 .fontSize(10)
                 .font('Helvetica')
-                .text(`Name: ${data.doctorName}`);
-
-            doc.moveDown(0.8);
-
-            // Appointment Details
-            doc.fontSize(11).font('Helvetica-Bold').text('Appointment Details');
-            doc
-                .fontSize(10)
-                .font('Helvetica')
-                .text(`Appointment Date: ${new Date(data.appointmentDate).toLocaleDateString()}`);
+                .text(`Event: ${data.eventTitle}`)
+                .text(`Date: ${new Date(data.eventDate).toLocaleDateString()}`);
 
             doc.moveDown(1);
 
             // Horizontal line
             doc.moveTo(50, doc.y).lineTo(545, doc.y).stroke();
-
             doc.moveDown(1);
 
-            // Amount Table
+            // Payment Summary
             const tableTop = doc.y;
             const col1X = 50;
             const col2X = 450;
 
             doc.fontSize(11).font('Helvetica-Bold').text('Payment Summary', col1X, tableTop);
-
             doc.moveDown(0.8);
 
             // Table Header
@@ -113,16 +101,14 @@ export const generateInvoicePdf = async (data: InvoiceData): Promise<Buffer> => 
             doc.text('Description', col1X, headerY);
             doc.text('Amount', col2X, headerY, { align: 'right' });
 
-            // Separator line
             doc.moveTo(col1X, doc.y).lineTo(col2X + 80, doc.y).stroke();
-
             doc.moveDown(0.5);
 
             // Amount Row
             const amountY = doc.y;
             doc.fontSize(10).font('Helvetica');
-            doc.text('Consultation Fee', col1X, amountY);
-            doc.text(`${data.amount.toFixed(2)} BDT`, col2X, amountY, { align: 'right' });
+            doc.text('Event Registration Fee', col1X, amountY);
+            doc.text(`${data.amount.toFixed(2)} ${data.currency.toUpperCase()}`, col2X, amountY, { align: 'right' });
 
             doc.moveDown(0.8);
 
@@ -130,30 +116,19 @@ export const generateInvoicePdf = async (data: InvoiceData): Promise<Buffer> => 
             const totalY = doc.y;
             doc.fontSize(11).font('Helvetica-Bold');
             doc.text('Total Amount', col1X, totalY);
-            doc.text(`${data.amount.toFixed(2)} BDT`, col2X, totalY, { align: 'right' });
+            doc.text(`${data.amount.toFixed(2)} ${data.currency.toUpperCase()}`, col2X, totalY, { align: 'right' });
 
-            // Separator line
             doc.moveTo(col1X, doc.y).lineTo(col2X + 80, doc.y).stroke();
-
             doc.moveDown(1.5);
 
             // Footer
             doc.fontSize(9).font('Helvetica').text(
-                'Thank you for choosing PH Healthcare. This is an electronically generated invoice.',
-                {
-                    align: 'center',
-                }
+                'Thank you for registering with Planora. This is an electronically generated invoice.',
+                { align: 'center' }
             );
+            doc.text('If you have any questions, please contact us at support@planora.com', { align: 'center' });
+            doc.text('Payment processed securely through Stripe', { align: 'center' });
 
-            doc.text('If you have any questions, please contact us at support@ph-healthcare.com', {
-                align: 'center',
-            });
-
-            doc.text('Payment processed securely through Stripe', {
-                align: 'center',
-            });
-
-            // End the document
             doc.end();
         } catch (error) {
             reject(error);

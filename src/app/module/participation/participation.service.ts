@@ -1,11 +1,13 @@
 import status from "http-status";
 import { parse } from "json2csv";
-import { EventStatus, EventVisibility, ParticipationStatus } from "../../../../generated/prisma/enums";
+import { EventStatus, EventVisibility, ParticipationStatus, PaymentStatus, PaymentGateway } from "../../../../generated/prisma/enums";
 import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "../../interfaces/requestUser.interface";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
-import { validateEventForJoining } from "./participation.utils";
+import { envVars } from "../../config/env";
+import { stripe } from "../../config/stripe.config";
+import { validateEventForJoining, validateEventForPaidJoining } from "./participation.utils";
 
 const joinPublicFreeEvent = async (eventId: string, user: IRequestUser) => {
     await validateEventForJoining(eventId, user.userId, EventVisibility.PUBLIC);
@@ -34,6 +36,176 @@ const requestPrivateFreeEvent = async (eventId: string, user: IRequestUser) => {
     });
 
     return participation;
+};
+
+const joinPublicPaidEvent = async (eventId: string, user: IRequestUser) => {
+    const { event, existingParticipation } = await validateEventForPaidJoining(eventId, user.userId, EventVisibility.PUBLIC);
+
+    const transaction = await prisma.$transaction(async (tx) => {
+        let paymentId: string;
+        let participationId: string;
+
+        if (existingParticipation) {
+            participationId = existingParticipation.id;
+            
+            if (existingParticipation.payment) {
+                paymentId = existingParticipation.payment.id;
+            } else {
+                const newPayment = await tx.payment.create({
+                    data: {
+                        eventId,
+                        userId: user.userId,
+                        amount: event.registrationFee,
+                        currency: event.currency || "USD",
+                        gateway: PaymentGateway.STRIPE,
+                        status: PaymentStatus.PENDING,
+                    }
+                });
+                paymentId = newPayment.id;
+                await tx.participation.update({
+                    where: { id: participationId },
+                    data: { paymentId }
+                });
+            }
+        } else {
+            const newPayment = await tx.payment.create({
+                data: {
+                    eventId,
+                    userId: user.userId,
+                    amount: event.registrationFee,
+                    currency: event.currency || "USD",
+                    gateway: PaymentGateway.STRIPE,
+                    status: PaymentStatus.PENDING,
+                }
+            });
+            paymentId = newPayment.id;
+
+            const newParticipation = await tx.participation.create({
+                data: {
+                    eventId,
+                    userId: user.userId,
+                    status: ParticipationStatus.PENDING,
+                    paymentId,
+                }
+            });
+            participationId = newParticipation.id;
+        }
+
+        return { paymentId, participationId };
+    });
+
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        line_items: [
+            {
+                price_data: {
+                    currency: (event.currency || "USD").toLowerCase(),
+                    product_data: {
+                        name: `Join Event: ${event.title}`,
+                    },
+                    unit_amount: Math.round(event.registrationFee * 100),
+                },
+                quantity: 1,
+            }
+        ],
+        metadata: {
+            eventId,
+            userId: user.userId,
+            paymentId: transaction.paymentId,
+            participationId: transaction.participationId,
+            type: "PUBLIC",
+        },
+        success_url: `${envVars.FRONTEND_URL}/dashboard/events/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${envVars.FRONTEND_URL}/events/${eventId}?error=payment_cancelled`,
+    });
+
+    return { paymentUrl: session.url };
+};
+
+const requestPrivatePaidEvent = async (eventId: string, user: IRequestUser) => {
+    const { event, existingParticipation } = await validateEventForPaidJoining(eventId, user.userId, EventVisibility.PRIVATE);
+
+    const transaction = await prisma.$transaction(async (tx) => {
+        let paymentId: string;
+        let participationId: string;
+
+        if (existingParticipation) {
+            participationId = existingParticipation.id;
+            
+            if (existingParticipation.payment) {
+                paymentId = existingParticipation.payment.id;
+            } else {
+                const newPayment = await tx.payment.create({
+                    data: {
+                        eventId,
+                        userId: user.userId,
+                        amount: event.registrationFee,
+                        currency: event.currency || "USD",
+                        gateway: PaymentGateway.STRIPE,
+                        status: PaymentStatus.PENDING,
+                    }
+                });
+                paymentId = newPayment.id;
+                await tx.participation.update({
+                    where: { id: participationId },
+                    data: { paymentId }
+                });
+            }
+        } else {
+            const newPayment = await tx.payment.create({
+                data: {
+                    eventId,
+                    userId: user.userId,
+                    amount: event.registrationFee,
+                    currency: event.currency || "USD",
+                    gateway: PaymentGateway.STRIPE,
+                    status: PaymentStatus.PENDING,
+                }
+            });
+            paymentId = newPayment.id;
+
+            const newParticipation = await tx.participation.create({
+                data: {
+                    eventId,
+                    userId: user.userId,
+                    status: ParticipationStatus.PENDING,
+                    paymentId,
+                }
+            });
+            participationId = newParticipation.id;
+        }
+
+        return { paymentId, participationId };
+    });
+
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        line_items: [
+            {
+                price_data: {
+                    currency: (event.currency || "USD").toLowerCase(),
+                    product_data: {
+                        name: `Request to Join: ${event.title}`,
+                    },
+                    unit_amount: Math.round(event.registrationFee * 100),
+                },
+                quantity: 1,
+            }
+        ],
+        metadata: {
+            eventId,
+            userId: user.userId,
+            paymentId: transaction.paymentId,
+            participationId: transaction.participationId,
+            type: "PRIVATE",
+        },
+        success_url: `${envVars.FRONTEND_URL}/dashboard/events/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${envVars.FRONTEND_URL}/events/${eventId}?error=payment_cancelled`,
+    });
+
+    return { paymentUrl: session.url };
 };
 
 const getEventParticipants = async (eventId: string, user: IRequestUser, queryParams: any) => {
@@ -210,6 +382,8 @@ const cancelParticipation = async (eventId: string, user: IRequestUser) => {
 export const ParticipationService = {
     joinPublicFreeEvent,
     requestPrivateFreeEvent,
+    joinPublicPaidEvent,
+    requestPrivatePaidEvent,
     getEventParticipants,
     exportParticipantsAsCSV,
     updateParticipationStatus,

@@ -15,6 +15,14 @@ router.post("/:eventId/request",
     checkAuth(Role.ADMIN, Role.USER),
     ParticipationController.requestPrivateFreeEvent);
 
+router.post("/:eventId/pay-join",
+    checkAuth(Role.ADMIN, Role.USER),
+    ParticipationController.joinPublicPaidEvent);
+
+router.post("/:eventId/pay-request",
+    checkAuth(Role.ADMIN, Role.USER),
+    ParticipationController.requestPrivatePaidEvent);
+
 router.get("/:eventId",
     checkAuth(Role.ADMIN, Role.USER),
     ParticipationController.getEventParticipants);
