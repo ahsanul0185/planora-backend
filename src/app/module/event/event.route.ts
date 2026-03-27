@@ -26,6 +26,7 @@ router.get("/", EventController.getAllEvents);
 router.get("/:id", EventController.getEventById);
 router.get("/:id/similar", EventController.getSimilarEvents);
 
+
 router.put("/:id",
     checkAuth(Role.ADMIN, Role.USER),
     uploadBanner,

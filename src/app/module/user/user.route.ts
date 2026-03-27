@@ -11,6 +11,10 @@ router.get("/",
     checkAuth(Role.ADMIN),
     UserController.getAllUsers);
 
+router.get("/me/joined-events",
+    checkAuth(Role.USER, Role.ADMIN),
+    UserController.getMyJoinedEvents);
+
 router.get("/:id",
     checkAuth(Role.ADMIN),
     UserController.getUserById);

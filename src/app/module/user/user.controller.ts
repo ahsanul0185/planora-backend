@@ -38,8 +38,19 @@ const getUserById = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getMyJoinedEvents = catchAsync(async (req: Request, res: Response) => {
+    const result = await UserService.getMyJoinedEvents(req.user.userId);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Your joined events retrieved successfully",
+        data: result,
+    });
+});
+
 export const UserController = {
     createAdmin,
     getAllUsers,
-    getUserById
+    getUserById,
+    getMyJoinedEvents
 };

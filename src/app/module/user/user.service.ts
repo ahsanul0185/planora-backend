@@ -78,8 +78,24 @@ const getUserById = async (id: string) => {
     return user;
 };
 
+const getMyJoinedEvents = async (userId: string) => {
+    return await prisma.participation.findMany({
+        where: { userId },
+        include: {
+            event: {
+                include: {
+                    category: true,
+                    organizer: { select: { id: true, name: true, image: true } }
+                }
+            }
+        },
+        orderBy: { joinedAt: "desc" }
+    });
+};
+
 export const UserService = {
     createAdmin,
     getAllUsers,
-    getUserById
+    getUserById,
+    getMyJoinedEvents
 };

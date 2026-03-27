@@ -36,9 +36,9 @@ const getAllEvents = async (queryParams: IEventQueryParams) => {
     )
         .search()
         .filter()
-        .where({
+        .where({ 
             status: EventStatus.PUBLISHED,
-            visibility: EventVisibility.PUBLIC,
+            // visibility: EventVisibility.PUBLIC,
             deletedAt: null,
         })
         .sort()
