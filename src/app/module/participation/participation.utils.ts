@@ -95,8 +95,10 @@ export const validateEventForPaidJoining = async (eventId: string, userId: strin
         if (existingParticipation.status === ParticipationStatus.CONFIRMED) {
             throw new AppError(status.CONFLICT, "You are already confirmed for this event.");
         }
-        if (existingParticipation.status === ParticipationStatus.PENDING && existingParticipation.payment?.status === "COMPLETED") {
-             // Already paid and request is pending approval
+        if (existingParticipation.status === ParticipationStatus.APPROVED) {
+            throw new AppError(status.CONFLICT, "Your request is approved. Please proceed to payment to confirm your spot.");
+        }
+        if (existingParticipation.status === ParticipationStatus.PENDING) {
              throw new AppError(status.CONFLICT, "Your request is already pending host approval.");
         }
     }

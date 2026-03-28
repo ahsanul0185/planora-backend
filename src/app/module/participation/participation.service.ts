@@ -126,86 +126,19 @@ const joinPublicPaidEvent = async (eventId: string, user: IRequestUser) => {
 const requestPrivatePaidEvent = async (eventId: string, user: IRequestUser) => {
     const { event, existingParticipation } = await validateEventForPaidJoining(eventId, user.userId, EventVisibility.PRIVATE);
 
-    const transaction = await prisma.$transaction(async (tx) => {
-        let paymentId: string;
-        let participationId: string;
+    if (existingParticipation) {
+        return existingParticipation;
+    }
 
-        if (existingParticipation) {
-            participationId = existingParticipation.id;
-            
-            if (existingParticipation.payment) {
-                paymentId = existingParticipation.payment.id;
-            } else {
-                const newPayment = await tx.payment.create({
-                    data: {
-                        eventId,
-                        userId: user.userId,
-                        amount: event.registrationFee,
-                        currency: event.currency || "USD",
-                        gateway: PaymentGateway.STRIPE,
-                        status: PaymentStatus.PENDING,
-                    }
-                });
-                paymentId = newPayment.id;
-                await tx.participation.update({
-                    where: { id: participationId },
-                    data: { paymentId }
-                });
-            }
-        } else {
-            const newPayment = await tx.payment.create({
-                data: {
-                    eventId,
-                    userId: user.userId,
-                    amount: event.registrationFee,
-                    currency: event.currency || "USD",
-                    gateway: PaymentGateway.STRIPE,
-                    status: PaymentStatus.PENDING,
-                }
-            });
-            paymentId = newPayment.id;
-
-            const newParticipation = await tx.participation.create({
-                data: {
-                    eventId,
-                    userId: user.userId,
-                    status: ParticipationStatus.PENDING,
-                    paymentId,
-                }
-            });
-            participationId = newParticipation.id;
-        }
-
-        return { paymentId, participationId };
-    });
-
-    const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        mode: 'payment',
-        line_items: [
-            {
-                price_data: {
-                    currency: (event.currency || "USD").toLowerCase(),
-                    product_data: {
-                        name: `Request to Join: ${event.title}`,
-                    },
-                    unit_amount: Math.round(event.registrationFee * 100),
-                },
-                quantity: 1,
-            }
-        ],
-        metadata: {
+    const participation = await prisma.participation.create({
+        data: {
             eventId,
             userId: user.userId,
-            paymentId: transaction.paymentId,
-            participationId: transaction.participationId,
-            type: "PRIVATE",
+            status: ParticipationStatus.PENDING,
         },
-        success_url: `${envVars.FRONTEND_URL}/dashboard/events/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${envVars.FRONTEND_URL}/events/${eventId}?error=payment_cancelled`,
     });
 
-    return { paymentUrl: session.url };
+    return participation;
 };
 
 const getEventParticipants = async (eventId: string, user: IRequestUser, queryParams: any) => {
@@ -236,6 +169,9 @@ const getEventParticipants = async (eventId: string, user: IRequestUser, queryPa
             user: {
                 select: { id: true, name: true, email: true, image: true },
             },
+            payment: {
+                select: { status: true, amount: true, currency: true, transactionId: true, invoiceUrl: true }
+            }
         });
 
     return builder.execute();
@@ -322,6 +258,11 @@ const updateParticipationStatus = async (eventId: string, participantUserId: str
             updateData.rejectedAt = null;
             updateData.rejectedReason = null;
             break;
+        case ParticipationStatus.APPROVED:
+            updateData.approvedAt = new Date();
+            updateData.rejectedAt = null;
+            updateData.bannedAt = null;
+            break;
         case ParticipationStatus.REJECTED:
             updateData.rejectedAt = new Date();
             break;
@@ -379,6 +320,81 @@ const cancelParticipation = async (eventId: string, user: IRequestUser) => {
     return updated;
 };
 
+const initiatePaymentForApprovedParticipation = async (eventId: string, user: IRequestUser) => {
+    const participation = await prisma.participation.findFirst({
+        where: { eventId, userId: user.userId },
+        include: { event: true, payment: true }
+    });
+
+    if (!participation) {
+        throw new AppError(status.NOT_FOUND, "Participation record not found");
+    }
+
+    if (participation.status !== ParticipationStatus.APPROVED) {
+        throw new AppError(status.BAD_REQUEST, `Payment is only allowed for approved participations. Current status: ${participation.status}`);
+    }
+
+    const event = participation.event;
+
+    // Check payment deadline (before event start date)
+    if (new Date(event.startDate) < new Date()) {
+        throw new AppError(status.BAD_REQUEST, "Cannot pay for an event that has already started");
+    }
+
+    const transaction = await prisma.$transaction(async (tx) => {
+        let paymentId: string;
+
+        if (participation.payment) {
+            paymentId = participation.payment.id;
+        } else {
+            const newPayment = await tx.payment.create({
+                data: {
+                    eventId,
+                    userId: user.userId,
+                    amount: event.registrationFee,
+                    currency: event.currency || "USD",
+                    gateway: PaymentGateway.STRIPE,
+                    status: PaymentStatus.PENDING,
+                }
+            });
+            paymentId = newPayment.id;
+            await tx.participation.update({
+                where: { id: participation.id },
+                data: { paymentId }
+            });
+        }
+        return { paymentId };
+    });
+
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        line_items: [
+            {
+                price_data: {
+                    currency: (event.currency || "USD").toLowerCase(),
+                    product_data: {
+                        name: `Join Event: ${event.title}`,
+                    },
+                    unit_amount: Math.round(event.registrationFee * 100),
+                },
+                quantity: 1,
+            }
+        ],
+        metadata: {
+            eventId,
+            userId: user.userId,
+            paymentId: transaction.paymentId,
+            participationId: participation.id,
+            type: "PRIVATE_PAID",
+        },
+        success_url: `${envVars.FRONTEND_URL}/dashboard/events/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${envVars.FRONTEND_URL}/events/${eventId}?error=payment_cancelled`,
+    });
+
+    return { paymentUrl: session.url };
+};
+
 export const ParticipationService = {
     joinPublicFreeEvent,
     requestPrivateFreeEvent,
@@ -388,4 +404,5 @@ export const ParticipationService = {
     exportParticipantsAsCSV,
     updateParticipationStatus,
     cancelParticipation,
+    initiatePaymentForApprovedParticipation,
 };

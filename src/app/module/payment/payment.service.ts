@@ -107,7 +107,7 @@ const handlerStripeWebhookEvent = async (event: Stripe.Event) => {
                 if (status === PaymentStatus.COMPLETED) {
                     let nextStatus: ParticipationStatus = ParticipationStatus.PENDING;
 
-                    if (type === "PUBLIC" || type === "INVITATION_PAID") {
+                    if (type === "PUBLIC" || type === "INVITATION_PAID" || type === "PRIVATE_PAID") {
                         nextStatus = ParticipationStatus.CONFIRMED;
                     }
 
@@ -115,7 +115,7 @@ const handlerStripeWebhookEvent = async (event: Stripe.Event) => {
                         where: { id: participationId },
                         data: {
                             status: nextStatus,
-                            approvedAt: nextStatus === ParticipationStatus.CONFIRMED ? new Date() : null,
+                            approvedAt: nextStatus === ParticipationStatus.CONFIRMED ? new Date() : undefined,
                         }
                     });
 

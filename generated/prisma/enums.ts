@@ -56,6 +56,7 @@ export type EventVisibility = (typeof EventVisibility)[keyof typeof EventVisibil
 
 export const ParticipationStatus = {
   PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
   CONFIRMED: 'CONFIRMED',
   REJECTED: 'REJECTED',
   BANNED: 'BANNED',

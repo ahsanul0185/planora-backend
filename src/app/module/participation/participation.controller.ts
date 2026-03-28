@@ -37,6 +37,16 @@ const joinPublicPaidEvent = catchAsync(async (req: Request, res: Response) => {
 const requestPrivatePaidEvent = catchAsync(async (req: Request, res: Response) => {
     const result = await ParticipationService.requestPrivatePaidEvent(req.params.eventId as string, req.user);
     sendResponse(res, {
+        httpStatusCode: status.CREATED,
+        success: true,
+        message: "Request to join the event submitted successfully. Please wait for host approval.",
+        data: result,
+    });
+});
+
+const payForApprovedParticipation = catchAsync(async (req: Request, res: Response) => {
+    const result = await ParticipationService.initiatePaymentForApprovedParticipation(req.params.eventId as string, req.user);
+    sendResponse(res, {
         httpStatusCode: status.OK,
         success: true,
         message: "Payment session generated successfully",
@@ -99,4 +109,5 @@ export const ParticipationController = {
     exportParticipantsAsCSV,
     updateParticipationStatus,
     cancelParticipation,
+    payForApprovedParticipation,
 };

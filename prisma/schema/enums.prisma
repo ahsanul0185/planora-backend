@@ -30,6 +30,7 @@ enum EventVisibility {
 
 enum ParticipationStatus {
   PENDING
+  APPROVED
   CONFIRMED
   REJECTED
   BANNED

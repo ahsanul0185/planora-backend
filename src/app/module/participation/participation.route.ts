@@ -24,6 +24,10 @@ router.post("/:eventId/pay-request",
     checkAuth(Role.ADMIN, Role.PARTICIPANT),
     ParticipationController.requestPrivatePaidEvent);
 
+router.post("/:eventId/pay",
+    checkAuth(Role.ADMIN, Role.PARTICIPANT),
+    ParticipationController.payForApprovedParticipation);
+
 // ORGANIZER: View participants for their event
 router.get("/:eventId",
     checkAuth(Role.ADMIN, Role.ORGANIZER),
