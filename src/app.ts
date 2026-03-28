@@ -27,6 +27,7 @@ app.use(cors({
     allowedHeaders : ["Content-Type", "Authorization"]
 }))
 
+app.use(cookieParser())
 app.use("/api/auth", toNodeHandler(auth))
 
 // Enable URL-encoded form data parsing
@@ -40,7 +41,7 @@ app.use((req, res, next) => {
         express.json()(req, res, next);
     }
 });
-app.use(cookieParser())
+
 app.use(express.urlencoded({ extended: true }));
 
 

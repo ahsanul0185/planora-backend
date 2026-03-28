@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { bearer, emailOTP } from "better-auth/plugins";
+import { bearer, emailOTP, oAuthProxy } from "better-auth/plugins";
 import { Role, UserStatus } from "../../../generated/prisma/enums";
 import { envVars } from "../config/env";
 import { sendEmail } from "../utils/email";
@@ -156,7 +156,8 @@ export const auth = betterAuth({
             },
             expiresIn : 2 * 60, // 2 minutes in seconds
             otpLength : 6,
-        })
+        }),
+        oAuthProxy()
     ],
 
     session: {
@@ -176,7 +177,7 @@ export const auth = betterAuth({
 
     advanced: {
         // disableCSRFCheck: true,
-        useSecureCookies : false,
+        useSecureCookies : envVars.NODE_ENV === "production",
         cookies:{
             state:{
                 attributes:{
@@ -184,14 +185,16 @@ export const auth = betterAuth({
                     secure: true,
                     httpOnly: true,
                     path: "/",
+                    partitioned: true,
                 }
             },
-            sessionToken:{
+            session_token:{
                 attributes:{
                     sameSite: "none",
                     secure: true,
                     httpOnly: true,
                     path: "/",
+                    partitioned: true,
                 }
             }
         }
