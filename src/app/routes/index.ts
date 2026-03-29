@@ -9,6 +9,7 @@ import { UserRoutes } from "../module/user/user.route";
 import { ParticipationRoutes } from "../module/participation/participation.route";
 import { InvitationRoutes } from "../module/invitation/invitation.route";
 import { BookmarkRoutes } from "../module/bookmark/bookmark.route";
+import { DashboardRoutes } from "../module/dashboard/dashboard.route";
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use("/reviews", ReviewRoutes);
 router.use("/payments", PaymentRoutes);
 router.use("/invitations", InvitationRoutes);
 router.use("/bookmark", BookmarkRoutes);
+router.use("/dashboard", DashboardRoutes);
 
 export const IndexRoutes = router;
