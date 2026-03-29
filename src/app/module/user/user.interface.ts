@@ -1,4 +1,5 @@
 import { Gender } from "../../../../generated/prisma/enums";
+import { IQueryParams } from "../../interfaces/query.interface";
 
 export interface ICreateAdminPayload {
     password: string;
@@ -19,3 +20,5 @@ export interface IUpdateProfilePayload {
     phoneNumber?: string;
     address?: string;
 }
+
+export interface IMyJoinedEventsQueryParams extends IQueryParams {}

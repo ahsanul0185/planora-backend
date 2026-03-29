@@ -3,7 +3,8 @@ import { Role } from "../../../../generated/prisma/enums";
 import AppError from "../../errorHelpers/AppError";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
-import { ICreateAdminPayload, IUpdateProfilePayload } from "./user.interface";
+import { QueryBuilder } from "../../utils/QueryBuilder";
+import { ICreateAdminPayload, IMyJoinedEventsQueryParams, IUpdateProfilePayload } from "./user.interface";
 
 const createAdmin = async (payload: ICreateAdminPayload) => {
     const userExists = await prisma.user.findUnique({
@@ -78,19 +79,32 @@ const getUserById = async (id: string) => {
     return user;
 };
 
-const getMyJoinedEvents = async (userId: string) => {
-    return await prisma.participation.findMany({
-        where: { userId },
+const PARTICIPATION_EVENT_INCLUDE = {
+    event: {
         include: {
-            event: {
-                include: {
-                    category: true,
-                    organizer: { select: { id: true, name: true, image: true } }
-                }
-            }
+            category: true,
+            organizer: { select: { id: true, name: true, email: true, image: true } },
+            tags: { select: { id: true, name: true } },
+            _count: { select: { participations: true, reviews: true } },
         },
-        orderBy: { joinedAt: "desc" }
-    });
+    },
+};
+
+const getMyJoinedEvents = async (userId: string, queryParams: IMyJoinedEventsQueryParams) => {
+    const builder = new QueryBuilder(
+        prisma.participation,
+        queryParams,
+        {
+            searchableFields: ["event.title", "event.description"],
+        }
+    )
+        .search()
+        .where({ userId })
+        .sort()
+        .paginate()
+        .include(PARTICIPATION_EVENT_INCLUDE as any);
+
+    return builder.execute();
 };
 
 const updateMyProfile = async (userId: string, payload: IUpdateProfilePayload) => {
