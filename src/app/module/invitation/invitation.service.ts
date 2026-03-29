@@ -46,6 +46,35 @@ const sendInvitations = async (eventId: string, emails: string[], user: IRequest
         throw new AppError(status.BAD_REQUEST, "All provided emails are already invited.");
     }
 
+    if (event.maxParticipants) {
+        const participantCount = await prisma.participation.count({
+            where: {
+                eventId,
+                status: {
+                    in: [ParticipationStatus.CONFIRMED, ParticipationStatus.APPROVED]
+                }
+            }
+        });
+
+        const pendingInvitationsCount = await prisma.invitation.count({
+            where: {
+                eventId,
+                status: InvitationStatus.PENDING
+            }
+        });
+
+        const totalSpotTaken = participantCount + pendingInvitationsCount;
+        const availableSpots = event.maxParticipants - totalSpotTaken;
+
+        if (availableSpots <= 0) {
+            throw new AppError(status.BAD_REQUEST, "Event has reached maximum participant capacity limit.");
+        }
+
+        if (emailsToInvite.length > availableSpots) {
+            throw new AppError(status.BAD_REQUEST, `Cannot send invitations. Only ${availableSpots} spot(s) are remaining for this event.`);
+        }
+    }
+
     const invitationsData = emailsToInvite.map(email => {
         const registeredMatch = registeredUserMap.get(email);
         return {

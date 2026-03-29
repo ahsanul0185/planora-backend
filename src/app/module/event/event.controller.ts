@@ -56,12 +56,13 @@ const getSimilarEvents = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getMyEvents = catchAsync(async (req: Request, res: Response) => {
-    const result = await EventService.getMyEvents(req.user);
+    const result = await EventService.getMyEvents(req.user, req.query as any);
     sendResponse(res, {
         httpStatusCode: status.OK,
         success: true,
         message: "Your events retrieved successfully",
-        data: result,
+        data: result.data,
+        meta: result.meta,
     });
 });
 

@@ -256,24 +256,30 @@ const deleteEvent = async (id: string, user: IRequestUser) => {
     return { message: "Event deleted successfully" };
 };
 
-const getMyEvents = async (user: IRequestUser) => {
-    const events = await prisma.event.findMany({
-        where: { organizerId: user.userId, deletedAt: null },
-        include: {
+const getMyEvents = async (user: IRequestUser, queryParams: IEventQueryParams) => {
+    const builder = new QueryBuilder(
+        prisma.event,
+        queryParams,
+        {
+            searchableFields: ["title", "description"],
+            filterableFields: ["status", "visibility", "categoryId"],
+        }
+    )
+        .search()
+        .filter()
+        .where({ organizerId: user.userId, deletedAt: null })
+        .sort()
+        .paginate()
+        .include({
             ...EVENT_INCLUDE,
-            _count: {
-                select: {
-                    participations: true,
-                    reviews: true,
-                },
-            },
-        },
-        orderBy: { createdAt: "desc" },
-    });
+            _count: { select: { participations: true, reviews: true } },
+        } as any);
+
+    const result = await builder.execute();
 
     // Attach participant stats to each event
     const eventsWithStats = await Promise.all(
-        events.map(async (event) => {
+        (result.data as any[]).map(async (event) => {
             const [confirmed, pending] = await Promise.all([
                 prisma.participation.count({ where: { eventId: event.id, status: "CONFIRMED" } }),
                 prisma.participation.count({ where: { eventId: event.id, status: "PENDING" } }),
@@ -282,7 +288,7 @@ const getMyEvents = async (user: IRequestUser) => {
         })
     );
 
-    return eventsWithStats;
+    return { data: eventsWithStats, meta: result.meta };
 };
 
 export const EventService = {

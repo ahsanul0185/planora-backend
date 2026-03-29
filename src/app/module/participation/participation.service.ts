@@ -167,7 +167,18 @@ const getEventParticipants = async (eventId: string, user: IRequestUser, queryPa
         .paginate()
         .include({
             user: {
-                select: { id: true, name: true, email: true, image: true },
+                select: { 
+                    id: true, 
+                    name: true, 
+                    email: true, 
+                    image: true,
+                    phoneNumber: true,
+                    address: true,
+                    gender: true,
+                    birthdate: true,
+                    bio: true,
+                    createdAt: true
+                },
             },
             payment: {
                 select: { status: true, amount: true, currency: true, transactionId: true, invoiceUrl: true }
@@ -280,7 +291,20 @@ const updateParticipationStatus = async (eventId: string, participantUserId: str
         where: { id: participation.id },
         data: updateData,
         include: {
-            user: { select: { id: true, name: true, email: true } }
+            user: { 
+                select: { 
+                    id: true, 
+                    name: true, 
+                    email: true,
+                    image: true,
+                    phoneNumber: true,
+                    address: true,
+                    gender: true,
+                    birthdate: true,
+                    bio: true,
+                    createdAt: true
+                } 
+            }
         }
     });
 
