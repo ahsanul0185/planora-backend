@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/server.js",
-    "build": "tsc",
+    "build": "prisma generate && tsc && node scripts/fix-imports.js",
     "dev": "tsx watch src/server.ts",
     "lint": "eslint ./src/**/*",
     "migrate": "prisma migrate dev",
@@ -13,6 +13,7 @@
     "studio": "prisma studio",
     "push": "prisma db push",
     "pull": "prisma db pull",
+    "postinstall": "prisma generate",
     "stripe:webhook": "stripe listen --forward-to localhost:5000/api/v1/payments/webhook",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

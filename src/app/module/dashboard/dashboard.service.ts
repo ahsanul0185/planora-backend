@@ -1,4 +1,4 @@
-import { EventStatus, ParticipationStatus, PaymentStatus, InvitationStatus } from "../../../../generated/prisma/enums";
+import { EventStatus, ParticipationStatus, PaymentStatus, InvitationStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
 const getOrganizerDashboardData = async (organizerId: string) => {

@@ -1,4 +1,4 @@
-import { Gender } from "../../../../generated/prisma/enums";
+import { Gender } from "../../../generated/prisma/enums";
 import { IQueryParams } from "../../interfaces/query.interface";
 
 export interface ICreateAdminPayload {

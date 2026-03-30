@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { PaymentStatus, ParticipationStatus, InvitationStatus } from "../../../../generated/prisma/enums";
+import { PaymentStatus, ParticipationStatus, InvitationStatus } from "../../../generated/prisma/enums";
 import { uploadFileToCloudinary } from "../../config/cloudinary.config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../config/stripe.config";

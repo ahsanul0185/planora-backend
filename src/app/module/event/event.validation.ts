@@ -1,5 +1,5 @@
 import z from "zod";
-import { EventStatus, EventVisibility } from "../../../../generated/prisma/enums";
+import { EventStatus, EventVisibility } from "../../../generated/prisma/enums";
 
 // Coerce string numbers to numbers and string booleans to booleans for form-data compatibility
 const booleanCoerce = z.preprocess((val) => {

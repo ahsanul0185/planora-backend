@@ -1,6 +1,6 @@
 import status from "http-status";
 import { parse } from "json2csv";
-import { EventStatus, EventVisibility, ParticipationStatus, PaymentStatus, PaymentGateway } from "../../../../generated/prisma/enums";
+import { EventStatus, EventVisibility, ParticipationStatus, PaymentStatus, PaymentGateway } from "../../../generated/prisma/enums";
 import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "../../interfaces/requestUser.interface";
 import { prisma } from "../../lib/prisma";

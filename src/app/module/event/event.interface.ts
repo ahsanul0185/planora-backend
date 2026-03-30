@@ -1,4 +1,4 @@
-import { EventStatus, EventVisibility } from "../../../../generated/prisma/enums";
+import { EventStatus, EventVisibility } from "../../../generated/prisma/enums";
 
 export interface ICreateEventPayload {
     title: string;

@@ -1,6 +1,6 @@
 import status from "http-status";
 import { JwtPayload } from "jsonwebtoken";
-import { Role, UserStatus } from "../../../../generated/prisma/enums";
+import { Role, UserStatus } from "../../../generated/prisma/enums";
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "../../interfaces/requestUser.interface";

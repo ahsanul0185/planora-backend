@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import status from "http-status";
 import multer from "multer";
 import z from "zod";
-import { Prisma } from "../../../generated/prisma/client";
+import { Prisma } from "../../generated/prisma/client";
 import { envVars } from "../config/env";
 import AppError from "../errorHelpers/AppError";
 import { handlePrismaClientKnownRequestError, handlePrismaClientUnknownError, handlePrismaClientValidationError, handlerPrismaClientInitializationError, handlerPrismaClientRustPanicError } from "../errorHelpers/handlePrismaErrors";

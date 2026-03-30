@@ -1,7 +1,7 @@
 import status from "http-status";
 import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
-import { EventStatus, EventVisibility, ParticipationStatus } from "../../../../generated/prisma/enums";
+import { EventStatus, EventVisibility, ParticipationStatus } from "../../../generated/prisma/enums";
 
 export const validateEventForJoining = async (eventId: string, userId: string, expectedVisibility: EventVisibility) => {
     const event = await prisma.event.findUnique({

@@ -1,5 +1,5 @@
 import status from "http-status";
-import { EventStatus, EventVisibility } from "../../../../generated/prisma/enums";
+import { EventStatus, EventVisibility } from "../../../generated/prisma/enums";
 import { deleteFileFromCloudinary } from "../../config/cloudinary.config";
 import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "../../interfaces/requestUser.interface";

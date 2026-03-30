@@ -1,5 +1,5 @@
 import status from "http-status";
-import { InvitationStatus, ParticipationStatus, PaymentStatus, PaymentGateway } from "../../../../generated/prisma/enums";
+import { InvitationStatus, ParticipationStatus, PaymentStatus, PaymentGateway } from "../../../generated/prisma/enums";
 import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "../../interfaces/requestUser.interface";
 import { prisma } from "../../lib/prisma";
