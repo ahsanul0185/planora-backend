@@ -114,6 +114,16 @@ const deleteEvent = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const toggleFeaturedEvent = catchAsync(async (req: Request, res: Response) => {
+    const result = await EventService.toggleFeaturedEvent(req.params.id as string, req.user);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: result.isFeatured ? "Event added to featured successfully" : "Event removed from featured successfully",
+        data: result,
+    });
+});
+
 export const EventController = {
     getAllEvents,
     getFeaturedEvent,
@@ -125,4 +135,5 @@ export const EventController = {
     updateEvent,
     publishEvent,
     deleteEvent,
+    toggleFeaturedEvent,
 };

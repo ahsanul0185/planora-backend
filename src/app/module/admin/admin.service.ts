@@ -7,6 +7,9 @@ import { IChangeUserRolePayload, IChangeUserStatusPayload, IUpdateAdminPayload }
 
 const getAllAdmins = async () => {
     const admins = await prisma.admin.findMany({
+        where: {
+            isDeleted: false
+        },
         include: {
             user: true,
         }

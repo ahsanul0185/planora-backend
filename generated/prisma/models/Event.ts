@@ -51,6 +51,7 @@ export type EventMinAggregateOutputType = {
   isOnline: boolean | null
   venueName: string | null
   venueAddress: string | null
+  mapEmbedCode: string | null
   onlineLink: string | null
   registrationFee: number | null
   currency: string | null
@@ -78,6 +79,7 @@ export type EventMaxAggregateOutputType = {
   isOnline: boolean | null
   venueName: string | null
   venueAddress: string | null
+  mapEmbedCode: string | null
   onlineLink: string | null
   registrationFee: number | null
   currency: string | null
@@ -105,6 +107,7 @@ export type EventCountAggregateOutputType = {
   isOnline: number
   venueName: number
   venueAddress: number
+  mapEmbedCode: number
   onlineLink: number
   registrationFee: number
   currency: number
@@ -144,6 +147,7 @@ export type EventMinAggregateInputType = {
   isOnline?: true
   venueName?: true
   venueAddress?: true
+  mapEmbedCode?: true
   onlineLink?: true
   registrationFee?: true
   currency?: true
@@ -171,6 +175,7 @@ export type EventMaxAggregateInputType = {
   isOnline?: true
   venueName?: true
   venueAddress?: true
+  mapEmbedCode?: true
   onlineLink?: true
   registrationFee?: true
   currency?: true
@@ -198,6 +203,7 @@ export type EventCountAggregateInputType = {
   isOnline?: true
   venueName?: true
   venueAddress?: true
+  mapEmbedCode?: true
   onlineLink?: true
   registrationFee?: true
   currency?: true
@@ -312,6 +318,7 @@ export type EventGroupByOutputType = {
   isOnline: boolean
   venueName: string | null
   venueAddress: string | null
+  mapEmbedCode: string | null
   onlineLink: string | null
   registrationFee: number
   currency: string
@@ -362,6 +369,7 @@ export type EventWhereInput = {
   isOnline?: Prisma.BoolFilter<"Event"> | boolean
   venueName?: Prisma.StringNullableFilter<"Event"> | string | null
   venueAddress?: Prisma.StringNullableFilter<"Event"> | string | null
+  mapEmbedCode?: Prisma.StringNullableFilter<"Event"> | string | null
   onlineLink?: Prisma.StringNullableFilter<"Event"> | string | null
   registrationFee?: Prisma.FloatFilter<"Event"> | number
   currency?: Prisma.StringFilter<"Event"> | string
@@ -398,6 +406,7 @@ export type EventOrderByWithRelationInput = {
   isOnline?: Prisma.SortOrder
   venueName?: Prisma.SortOrderInput | Prisma.SortOrder
   venueAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  mapEmbedCode?: Prisma.SortOrderInput | Prisma.SortOrder
   onlineLink?: Prisma.SortOrderInput | Prisma.SortOrder
   registrationFee?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -437,6 +446,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   isOnline?: Prisma.BoolFilter<"Event"> | boolean
   venueName?: Prisma.StringNullableFilter<"Event"> | string | null
   venueAddress?: Prisma.StringNullableFilter<"Event"> | string | null
+  mapEmbedCode?: Prisma.StringNullableFilter<"Event"> | string | null
   onlineLink?: Prisma.StringNullableFilter<"Event"> | string | null
   registrationFee?: Prisma.FloatFilter<"Event"> | number
   currency?: Prisma.StringFilter<"Event"> | string
@@ -473,6 +483,7 @@ export type EventOrderByWithAggregationInput = {
   isOnline?: Prisma.SortOrder
   venueName?: Prisma.SortOrderInput | Prisma.SortOrder
   venueAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  mapEmbedCode?: Prisma.SortOrderInput | Prisma.SortOrder
   onlineLink?: Prisma.SortOrderInput | Prisma.SortOrder
   registrationFee?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -508,6 +519,7 @@ export type EventScalarWhereWithAggregatesInput = {
   isOnline?: Prisma.BoolWithAggregatesFilter<"Event"> | boolean
   venueName?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
   venueAddress?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
+  mapEmbedCode?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
   onlineLink?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
   registrationFee?: Prisma.FloatWithAggregatesFilter<"Event"> | number
   currency?: Prisma.StringWithAggregatesFilter<"Event"> | string
@@ -535,6 +547,7 @@ export type EventCreateInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -569,6 +582,7 @@ export type EventUncheckedCreateInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -603,6 +617,7 @@ export type EventUpdateInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -637,6 +652,7 @@ export type EventUncheckedUpdateInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -671,6 +687,7 @@ export type EventCreateManyInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -698,6 +715,7 @@ export type EventUpdateManyMutationInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -723,6 +741,7 @@ export type EventUncheckedUpdateManyInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -760,6 +779,7 @@ export type EventCountOrderByAggregateInput = {
   isOnline?: Prisma.SortOrder
   venueName?: Prisma.SortOrder
   venueAddress?: Prisma.SortOrder
+  mapEmbedCode?: Prisma.SortOrder
   onlineLink?: Prisma.SortOrder
   registrationFee?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -792,6 +812,7 @@ export type EventMaxOrderByAggregateInput = {
   isOnline?: Prisma.SortOrder
   venueName?: Prisma.SortOrder
   venueAddress?: Prisma.SortOrder
+  mapEmbedCode?: Prisma.SortOrder
   onlineLink?: Prisma.SortOrder
   registrationFee?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -819,6 +840,7 @@ export type EventMinOrderByAggregateInput = {
   isOnline?: Prisma.SortOrder
   venueName?: Prisma.SortOrder
   venueAddress?: Prisma.SortOrder
+  mapEmbedCode?: Prisma.SortOrder
   onlineLink?: Prisma.SortOrder
   registrationFee?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -1069,6 +1091,7 @@ export type EventCreateWithoutOrganizerInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1102,6 +1125,7 @@ export type EventUncheckedCreateWithoutOrganizerInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1164,6 +1188,7 @@ export type EventScalarWhereInput = {
   isOnline?: Prisma.BoolFilter<"Event"> | boolean
   venueName?: Prisma.StringNullableFilter<"Event"> | string | null
   venueAddress?: Prisma.StringNullableFilter<"Event"> | string | null
+  mapEmbedCode?: Prisma.StringNullableFilter<"Event"> | string | null
   onlineLink?: Prisma.StringNullableFilter<"Event"> | string | null
   registrationFee?: Prisma.FloatFilter<"Event"> | number
   currency?: Prisma.StringFilter<"Event"> | string
@@ -1191,6 +1216,7 @@ export type EventCreateWithoutCategoryInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1224,6 +1250,7 @@ export type EventUncheckedCreateWithoutCategoryInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1283,6 +1310,7 @@ export type EventCreateWithoutTagsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1316,6 +1344,7 @@ export type EventUncheckedCreateWithoutTagsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1365,6 +1394,7 @@ export type EventUpdateWithoutTagsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1398,6 +1428,7 @@ export type EventUncheckedUpdateWithoutTagsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1431,6 +1462,7 @@ export type EventCreateWithoutBookmarksInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1464,6 +1496,7 @@ export type EventUncheckedCreateWithoutBookmarksInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1513,6 +1546,7 @@ export type EventUpdateWithoutBookmarksInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1546,6 +1580,7 @@ export type EventUncheckedUpdateWithoutBookmarksInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1579,6 +1614,7 @@ export type EventCreateWithoutInvitationsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1612,6 +1648,7 @@ export type EventUncheckedCreateWithoutInvitationsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1661,6 +1698,7 @@ export type EventUpdateWithoutInvitationsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1694,6 +1732,7 @@ export type EventUncheckedUpdateWithoutInvitationsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1727,6 +1766,7 @@ export type EventCreateWithoutParticipationsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1760,6 +1800,7 @@ export type EventUncheckedCreateWithoutParticipationsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1809,6 +1850,7 @@ export type EventUpdateWithoutParticipationsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1842,6 +1884,7 @@ export type EventUncheckedUpdateWithoutParticipationsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1875,6 +1918,7 @@ export type EventCreateWithoutPaymentsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1908,6 +1952,7 @@ export type EventUncheckedCreateWithoutPaymentsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -1957,6 +2002,7 @@ export type EventUpdateWithoutPaymentsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1990,6 +2036,7 @@ export type EventUncheckedUpdateWithoutPaymentsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2023,6 +2070,7 @@ export type EventCreateWithoutReviewsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -2056,6 +2104,7 @@ export type EventUncheckedCreateWithoutReviewsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -2105,6 +2154,7 @@ export type EventUpdateWithoutReviewsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2138,6 +2188,7 @@ export type EventUncheckedUpdateWithoutReviewsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2171,6 +2222,7 @@ export type EventCreateWithoutActivityLogsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -2204,6 +2256,7 @@ export type EventUncheckedCreateWithoutActivityLogsInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -2253,6 +2306,7 @@ export type EventUpdateWithoutActivityLogsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2286,6 +2340,7 @@ export type EventUncheckedUpdateWithoutActivityLogsInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2319,6 +2374,7 @@ export type EventCreateManyOrganizerInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -2345,6 +2401,7 @@ export type EventUpdateWithoutOrganizerInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2378,6 +2435,7 @@ export type EventUncheckedUpdateWithoutOrganizerInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2411,6 +2469,7 @@ export type EventUncheckedUpdateManyWithoutOrganizerInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2437,6 +2496,7 @@ export type EventCreateManyCategoryInput = {
   isOnline?: boolean
   venueName?: string | null
   venueAddress?: string | null
+  mapEmbedCode?: string | null
   onlineLink?: string | null
   registrationFee?: number
   currency?: string
@@ -2463,6 +2523,7 @@ export type EventUpdateWithoutCategoryInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2496,6 +2557,7 @@ export type EventUncheckedUpdateWithoutCategoryInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2529,6 +2591,7 @@ export type EventUncheckedUpdateManyWithoutCategoryInput = {
   isOnline?: Prisma.BoolFieldUpdateOperationsInput | boolean
   venueName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   venueAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mapEmbedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onlineLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registrationFee?: Prisma.FloatFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2640,6 +2703,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   isOnline?: boolean
   venueName?: boolean
   venueAddress?: boolean
+  mapEmbedCode?: boolean
   onlineLink?: boolean
   registrationFee?: boolean
   currency?: boolean
@@ -2677,6 +2741,7 @@ export type EventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isOnline?: boolean
   venueName?: boolean
   venueAddress?: boolean
+  mapEmbedCode?: boolean
   onlineLink?: boolean
   registrationFee?: boolean
   currency?: boolean
@@ -2706,6 +2771,7 @@ export type EventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   isOnline?: boolean
   venueName?: boolean
   venueAddress?: boolean
+  mapEmbedCode?: boolean
   onlineLink?: boolean
   registrationFee?: boolean
   currency?: boolean
@@ -2735,6 +2801,7 @@ export type EventSelectScalar = {
   isOnline?: boolean
   venueName?: boolean
   venueAddress?: boolean
+  mapEmbedCode?: boolean
   onlineLink?: boolean
   registrationFee?: boolean
   currency?: boolean
@@ -2747,7 +2814,7 @@ export type EventSelectScalar = {
   categoryId?: boolean
 }
 
-export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "description" | "bannerImage" | "status" | "visibility" | "isFeatured" | "startDate" | "endDate" | "timezone" | "isOnline" | "venueName" | "venueAddress" | "onlineLink" | "registrationFee" | "currency" | "maxParticipants" | "registrationDeadline" | "deletedAt" | "createdAt" | "updatedAt" | "organizerId" | "categoryId", ExtArgs["result"]["event"]>
+export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "description" | "bannerImage" | "status" | "visibility" | "isFeatured" | "startDate" | "endDate" | "timezone" | "isOnline" | "venueName" | "venueAddress" | "mapEmbedCode" | "onlineLink" | "registrationFee" | "currency" | "maxParticipants" | "registrationDeadline" | "deletedAt" | "createdAt" | "updatedAt" | "organizerId" | "categoryId", ExtArgs["result"]["event"]>
 export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organizer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.EventCategoryDefaultArgs<ExtArgs>
@@ -2797,6 +2864,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     isOnline: boolean
     venueName: string | null
     venueAddress: string | null
+    mapEmbedCode: string | null
     onlineLink: string | null
     registrationFee: number
     currency: string
@@ -3253,6 +3321,7 @@ export interface EventFieldRefs {
   readonly isOnline: Prisma.FieldRef<"Event", 'Boolean'>
   readonly venueName: Prisma.FieldRef<"Event", 'String'>
   readonly venueAddress: Prisma.FieldRef<"Event", 'String'>
+  readonly mapEmbedCode: Prisma.FieldRef<"Event", 'String'>
   readonly onlineLink: Prisma.FieldRef<"Event", 'String'>
   readonly registrationFee: Prisma.FieldRef<"Event", 'Float'>
   readonly currency: Prisma.FieldRef<"Event", 'String'>

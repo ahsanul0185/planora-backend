@@ -5,6 +5,7 @@ import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 import { QueryBuilder } from "../../utils/QueryBuilder";
 import { ICreateAdminPayload, IMyJoinedEventsQueryParams, IUpdateProfilePayload } from "./user.interface";
+import { IQueryParams } from "../../interfaces/query.interface";
 
 const createAdmin = async (payload: ICreateAdminPayload) => {
     const userExists = await prisma.user.findUnique({
@@ -49,18 +50,34 @@ const createAdmin = async (payload: ICreateAdminPayload) => {
     }
 };
 
-const getAllUsers = async () => {
-    return await prisma.user.findMany({
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            role: true,
-            status: true,
-            createdAt: true,
-            admin: true
+const getAllUsers = async (queryParams: IQueryParams, currentUserId?: string) => {
+    const builder = new QueryBuilder(
+        prisma.user,
+        queryParams,
+        {
+            searchableFields: ["name", "email"],
+            filterableFields: ["status"]
         }
-    });
+    )
+        .search()
+        .filter()
+        .sort()
+        .paginate()
+        .where({ isDeleted: false } as any);
+
+    if (currentUserId) {
+        builder.where({
+            id: {
+                not: currentUserId
+            }
+        } as any);
+    }
+
+    builder.dynamicInclude({
+        admin: true
+    }, ["admin"]);
+
+    return builder.execute();
 };
 
 const getUserById = async (id: string) => {

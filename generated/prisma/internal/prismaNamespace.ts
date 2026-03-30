@@ -1669,6 +1669,7 @@ export const EventScalarFieldEnum = {
   isOnline: 'isOnline',
   venueName: 'venueName',
   venueAddress: 'venueAddress',
+  mapEmbedCode: 'mapEmbedCode',
   onlineLink: 'onlineLink',
   registrationFee: 'registrationFee',
   currency: 'currency',

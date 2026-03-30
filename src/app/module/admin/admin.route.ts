@@ -7,28 +7,33 @@ import { updateAdminZodSchema } from "./admin.validation";
 
 const router = Router();
 
+// ── Specific routes MUST come before /:id to avoid route shadowing ──
+
 router.get("/",
     checkAuth(Role.ADMIN),
     AdminController.getAllAdmins);
-    
+
+router.patch("/change-user-status",
+    checkAuth(Role.ADMIN),
+    AdminController.changeUserStatus);
+
+router.patch("/change-user-role",
+    checkAuth(Role.ADMIN),
+    AdminController.changeUserRole);
+
+// ── Parameterized routes ──
+
 router.get("/:id",
     checkAuth(Role.ADMIN),
     AdminController.getAdminById);
-    
+
 router.patch("/:id",
     checkAuth(Role.ADMIN),
-    validateRequest(updateAdminZodSchema), AdminController.updateAdmin);
-    
+    validateRequest(updateAdminZodSchema),
+    AdminController.updateAdmin);
+
 router.delete("/:id",
     checkAuth(Role.ADMIN),
     AdminController.deleteAdmin);
-
-router.patch("/change-user-status", 
-    checkAuth(Role.ADMIN),
-     AdminController.changeUserStatus);
-     
-router.patch("/change-user-role",
-     checkAuth(Role.ADMIN),
-     AdminController.changeUserRole);
 
 export const AdminRoutes = router;

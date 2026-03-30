@@ -31,7 +31,7 @@ const getAllEvents = async (queryParams: IEventQueryParams) => {
         queryParams,
         {
             searchableFields: ["title", "description", "organizer.name"],
-            filterableFields: ["visibility", "status", "categoryId"],
+            filterableFields: ["visibility", "status", "categoryId", "isFeatured"],
         }
     )
         .search()
@@ -50,6 +50,13 @@ const getAllEvents = async (queryParams: IEventQueryParams) => {
         builder.where({ registrationFee: 0 });
     } else if (queryParams.isFree === "false") {
         builder.where({ registrationFee: { gt: 0 } });
+    }
+
+    // Handle isFeatured filter manually if it comes as string boolean
+    if (queryParams.isFeatured === "true") {
+        builder.where({ isFeatured: true });
+    } else if (queryParams.isFeatured === "false") {
+        builder.where({ isFeatured: false });
     }
 
     return builder.execute();
@@ -256,12 +263,36 @@ const deleteEvent = async (id: string, user: IRequestUser) => {
     return { message: "Event deleted successfully" };
 };
 
+const toggleFeaturedEvent = async (id: string, user: IRequestUser) => {
+    const existing = await prisma.event.findFirst({
+        where: { id, deletedAt: null },
+    });
+
+    if (!existing) {
+        throw new AppError(status.NOT_FOUND, "Event not found");
+    }
+
+    if (user.role !== "ADMIN") {
+        throw new AppError(status.FORBIDDEN, "You are not authorized to toggle featured status");
+    }
+
+    const updatedEvent = await prisma.event.update({
+        where: { id },
+        data: {
+            isFeatured: !existing.isFeatured,
+        },
+        include: EVENT_INCLUDE as any,
+    });
+
+    return updatedEvent;
+};
+
 const getMyEvents = async (user: IRequestUser, queryParams: IEventQueryParams) => {
     const builder = new QueryBuilder(
         prisma.event,
         queryParams,
         {
-            searchableFields: ["title", "description"],
+            searchableFields: ["title", "description", "organizer.name"],
             filterableFields: ["status", "visibility", "categoryId"],
         }
     )
@@ -302,4 +333,5 @@ export const EventService = {
     publishEvent,
     deleteEvent,
     getMyEvents,
+    toggleFeaturedEvent,
 };

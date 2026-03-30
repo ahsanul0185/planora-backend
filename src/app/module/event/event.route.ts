@@ -41,4 +41,8 @@ router.delete("/:id",
     checkAuth(Role.ADMIN, Role.ORGANIZER),
     EventController.deleteEvent);
 
+router.patch("/:id/feature",
+    checkAuth(Role.ADMIN),
+    EventController.toggleFeaturedEvent);
+
 export const EventRoutes = router;

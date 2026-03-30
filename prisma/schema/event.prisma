@@ -15,6 +15,7 @@ model Event {
   isOnline     Boolean @default(false)
   venueName    String?
   venueAddress String?
+  mapEmbedCode String? @db.Text
   onlineLink   String?
 
   registrationFee      Float     @default(0)

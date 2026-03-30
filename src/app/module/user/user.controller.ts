@@ -17,12 +17,13 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-    const result = await UserService.getAllUsers();
+    const result = await UserService.getAllUsers(req.query as any, req.user?.userId);
     sendResponse(res, {
         httpStatusCode: status.OK,
         success: true,
         message: "Users retrieved successfully",
-        data: result,
+        data: result.data,
+        meta: result.meta,
     });
 });
 
