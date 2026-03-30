@@ -177,11 +177,9 @@ export const auth = betterAuth({
     trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000", envVars.FRONTEND_URL],
 
     advanced: {
-        // useSecureCookies is intentionally NOT set here.
-        // Setting it to true prefixes ALL cookie names with __Secure-,
-        // which breaks any code that reads "better-auth.session_token" directly
-        // (controller, proxy, frontend). Security is intact because every cookie
-        // already has secure: true set explicitly in its attributes below.
+        // useSecureCookies: false ensures that Better Auth does NOT prefix cookies with __Secure-,
+        // making them consistent and easy to read in our custom controller logic.
+        useSecureCookies: false,
         cookies:{
             state:{
                 attributes:{

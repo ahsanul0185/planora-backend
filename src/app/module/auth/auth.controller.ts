@@ -261,29 +261,21 @@ const googleLogin = catchAsync((req: Request, res: Response) => {
 const googleLoginSuccess = catchAsync(async (req: Request, res: Response) => {
     const redirectPath = req.query.redirect as string || "/dashboard";
 
-    const sessionToken = req.cookies["better-auth.session_token"];
     // Read the role chosen before OAuth redirect, then clear the cookie
     const oauthRole = req.cookies["oauth_role"] as string | undefined;
     res.clearCookie("oauth_role", { path: "/" });
 
-    if(!sessionToken){
-        return res.redirect(`${envVars.FRONTEND_URL}/login?error=oauth_failed`);
-    }
-
+    // Use getSession with headers to let Better Auth handle its own cookie lookup (including prefixes if any)
     const session = await auth.api.getSession({
-        headers:{
-            "Cookie" : `better-auth.session_token=${sessionToken}`
-        }
+        headers: new Headers(req.headers as any)
     })
 
-    if (!session) {
+    if (!session || !session.user) {
+        console.error("No better-auth session found during Google OAuth success callback");
         return res.redirect(`${envVars.FRONTEND_URL}/login?error=no_session_found`);
     }
 
-    if(session && !session.user){
-        return res.redirect(`${envVars.FRONTEND_URL}/login?error=no_user_found`);
-    }
-
+    const sessionToken = session.session.token;
     const result = await AuthService.googleLoginSuccess(session, oauthRole);
 
     const {accessToken, refreshToken} = result;
@@ -294,7 +286,9 @@ const googleLoginSuccess = catchAsync(async (req: Request, res: Response) => {
     const isValidRedirectPath = redirectPath.startsWith("/") && !redirectPath.startsWith("//");
     const finalRedirectPath = isValidRedirectPath ? redirectPath : "/dashboard";
 
-    res.redirect(`${envVars.FRONTEND_URL}${finalRedirectPath}`);
+    const callbackURL = `${envVars.FRONTEND_URL}/login/callback?accessToken=${accessToken}&refreshToken=${refreshToken}&sessionToken=${sessionToken}&redirect=${encodeURIComponent(finalRedirectPath)}`;
+
+    res.redirect(callbackURL);
 })
 
 const handleOAuthError = catchAsync((req: Request, res: Response) => {
