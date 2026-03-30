@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 function fixDir(dir) {
+  if (!fs.existsSync(dir)) return;
   const files = fs.readdirSync(dir);
 
   for (const file of files) {
@@ -16,19 +17,33 @@ function fixDir(dir) {
 
     let content = fs.readFileSync(full, "utf8");
 
-    // Replace your existing content.replace block with this:
+    let changed = false;
     content = content.replace(
       /from\s+["'](\.\.?\/[^"']+)["']/g,
       (match, p1) => {
-        // If it already ends in .js, return the match unchanged
-        if (p1.endsWith(".js")) return match;
+        if (p1.endsWith(".js") || p1.endsWith(".json")) return match;
 
-        // Otherwise, append .js
+        const targetPathFull = path.join(path.dirname(full), p1);
+
+        // Case 1: If it's a directory, check if it has an index.js
+        if (fs.existsSync(targetPathFull) && fs.statSync(targetPathFull).isDirectory()) {
+             const indexPath = path.join(targetPathFull, "index.js");
+             if (fs.existsSync(indexPath)) {
+                  changed = true;
+                  return match.replace(p1, `${p1}/index.js`);
+             }
+        }
+
+        // Case 2: Append .js by default for all others
+        changed = true;
         return match.replace(p1, `${p1}.js`);
       },
     );
 
-    fs.writeFileSync(full, content);
+    if (changed) {
+      fs.writeFileSync(full, content);
+      // console.log(`Fixed imports in ${full}`);
+    }
   }
 }
 
