@@ -31,6 +31,14 @@ const registerUser = async (payload: IRegisterUserPayload) => {
         throw new AppError(status.BAD_REQUEST, "Failed to register user");
     }
 
+    if (!data.user.emailVerified) {
+        return {
+            ...data,
+            accessToken: "",
+            refreshToken: "",
+        }
+    }
+
     const accessToken = tokenUtils.getAccessToken({
         userId: data.user.id,
         role: data.user.role,
@@ -272,6 +280,27 @@ const verifyEmail = async (email: string, otp: string) => {
         });
 
         if (user) {
+            // Generate tokens for the now-verified user
+            const accessToken = tokenUtils.getAccessToken({
+                userId: user.id,
+                role: user.role,
+                name: user.name,
+                email: user.email,
+                status: user.status,
+                isDeleted: user.isDeleted,
+                emailVerified: user.emailVerified,
+            });
+
+            const refreshToken = tokenUtils.getRefreshToken({
+                userId: user.id,
+                role: user.role,
+                name: user.name,
+                email: user.email,
+                status: user.status,
+                isDeleted: user.isDeleted,
+                emailVerified: user.emailVerified,
+            });
+
             // Send Welcome Email
             try {
                 await sendEmail({
@@ -289,8 +318,17 @@ const verifyEmail = async (email: string, otp: string) => {
                 console.error("Error sending welcome email:", emailError);
                 // Non-blocking error
             }
+
+            return {
+                ...result,
+                accessToken,
+                refreshToken,
+                user,
+            }
         }
     }
+
+    return result;
 }
 
 const requestEmailOTP = async (email: string) => {

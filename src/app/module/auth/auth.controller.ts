@@ -21,10 +21,16 @@ const registerUser = catchAsync(
         const result = await AuthService.registerUser(payload);
 
         const { accessToken, refreshToken, token, ...rest } = result
-
-        tokenUtils.setAccessTokenCookie(res, accessToken);
-        tokenUtils.setRefreshTokenCookie(res, refreshToken);
-        tokenUtils.setBetterAuthSessionCookie(res, token as string);
+        
+        if (accessToken) {
+            tokenUtils.setAccessTokenCookie(res, accessToken);
+        }
+        if (refreshToken) {
+            tokenUtils.setRefreshTokenCookie(res, refreshToken);
+        }
+        if (token) {
+            tokenUtils.setBetterAuthSessionCookie(res, token as string);
+        }
 
         sendResponse(res, {
             httpStatusCode: status.CREATED,
@@ -161,12 +167,30 @@ const logoutUser = catchAsync(
 const verifyEmail = catchAsync(
     async (req: Request, res: Response) => {
         const { email, otp } = req.body;
-        await AuthService.verifyEmail(email, otp);
+        const result = await AuthService.verifyEmail(email, otp);
+
+        const { accessToken, refreshToken, token, user } = result as any;
+
+        if (accessToken) {
+            tokenUtils.setAccessTokenCookie(res, accessToken);
+        }
+        if (refreshToken) {
+            tokenUtils.setRefreshTokenCookie(res, refreshToken);
+        }
+        if (token) {
+            tokenUtils.setBetterAuthSessionCookie(res, token as string);
+        }
 
         sendResponse(res, {
             httpStatusCode: status.OK,
             success: true,
             message: "Email verified successfully",
+            data: {
+                accessToken,
+                refreshToken,
+                token,
+                user,
+            },
         });
     }
 )

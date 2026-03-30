@@ -29,14 +29,12 @@ interface SendEmailOptions {
 }
 
 export const sendEmail = async ({subject, templateData, templateName, to, attachments} : SendEmailOptions) => {
-   
-    
     try {
         const templatePath = path.resolve(process.cwd(), `src/app/templates/${templateName}.ejs`);
 
         const html = await ejs.renderFile(templatePath, templateData);
 
-        const info = await transporter.sendMail({
+        await transporter.sendMail({
             from: envVars.EMAIL_SENDER.SMTP_FROM,
             to : to,
             subject : subject,
@@ -48,9 +46,7 @@ export const sendEmail = async ({subject, templateData, templateName, to, attach
             }))
         })
 
-        console.log(`Email sent to ${to} : ${info.messageId}`);
     } catch (error : any) {
-        console.log("Email Sending Error", error.message);
-        throw new AppError(status.INTERNAL_SERVER_ERROR, "Failed to send email");
+        throw new AppError(status.INTERNAL_SERVER_ERROR, `Email could not be sent: ${error.message}`);
     }
 }

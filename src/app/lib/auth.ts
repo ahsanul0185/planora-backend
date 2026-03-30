@@ -8,7 +8,7 @@ import { prisma } from "./prisma";
 // If your Prisma file is located elsewhere, you can change the path
 
 export const auth = betterAuth({
-    baseURL: envVars.FRONTEND_URL,
+    baseURL: envVars.BETTER_AUTH_URL,
     secret: envVars.BETTER_AUTH_SECRET,
     database: prismaAdapter(prisma, {
         provider: "postgresql", // or "mysql", "postgresql", ...etc
@@ -124,15 +124,20 @@ export const auth = betterAuth({
                    }
                   
                     if (user && !user.emailVerified){
-                    sendEmail({
-                        to : email,
-                        subject : "Verify your email",
-                        templateName : "otp",
-                        templateData :{
-                            name : user.name,
-                            otp,
-                        }
-                    })
+                    try {
+                        await sendEmail({
+                            to : email,
+                            subject : "Verify your email",
+                            templateName : "otp",
+                            templateData :{
+                                name : user.name,
+                                otp,
+                            }
+                        })
+                        console.log(`Verification OTP sent successfully to ${email}`);
+                    } catch (err) {
+                        console.error(`Failed to send verification OTP to ${email}:`, err);
+                    }
                   }
                 }else if(type === "forget-password"){
                     const user = await prisma.user.findUnique({
@@ -142,15 +147,20 @@ export const auth = betterAuth({
                     })
 
                     if(user){
-                        sendEmail({
-                            to : email,
-                            subject : "Password Reset OTP",
-                            templateName : "otp",
-                            templateData :{
-                                name : user.name,
-                                otp,
-                            }
-                        })
+                        try {
+                            await sendEmail({
+                                to : email,
+                                subject : "Password Reset OTP",
+                                templateName : "otp",
+                                templateData :{
+                                    name : user.name,
+                                    otp,
+                                }
+                            })
+                            console.log(`Password reset OTP sent successfully to ${email}`);
+                        } catch (err) {
+                            console.error(`Failed to send password reset OTP to ${email}:`, err);
+                        }
                     }
                 }
             },
@@ -160,15 +170,6 @@ export const auth = betterAuth({
         oAuthProxy()
     ],
 
-    session: {
-        expiresIn: 60 * 60 * 60 * 24, // 1 day in seconds
-        updateAge: 60 * 60 * 60 * 24, // 1 day in seconds
-        cookieCache: {
-            enabled: true,
-            maxAge: 60 * 60 * 60 * 24, // 1 day in seconds
-        }
-    },
-
     redirectURLs:{
         signIn : `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
     },
@@ -177,7 +178,7 @@ export const auth = betterAuth({
 
     advanced: {
         // disableCSRFCheck: true,
-        useSecureCookies : envVars.NODE_ENV === "production",
+        useSecureCookies : true,
         cookies:{
             state:{
                 attributes:{
@@ -185,7 +186,6 @@ export const auth = betterAuth({
                     secure: true,
                     httpOnly: true,
                     path: "/",
-                    partitioned: true,
                 }
             },
             session_token:{
@@ -195,7 +195,6 @@ export const auth = betterAuth({
                     secure: true,
                     httpOnly: true,
                     path: "/",
-                    partitioned: true,
                 }
             }
         }
