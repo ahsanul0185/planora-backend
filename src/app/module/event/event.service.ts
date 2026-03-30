@@ -31,7 +31,7 @@ const getAllEvents = async (queryParams: IEventQueryParams) => {
         queryParams,
         {
             searchableFields: ["title", "description", "organizer.name"],
-            filterableFields: ["visibility", "status", "categoryId", "isFeatured"],
+            filterableFields: ["visibility", "status", "categoryId", "isFeatured", "registrationFee"],
         }
     )
         .search()
@@ -102,6 +102,25 @@ const getEventById = async (id: string) => {
     // Compute average rating
     const avgRating = await prisma.review.aggregate({
         where: { eventId: id },
+        _avg: { rating: true },
+    });
+
+    return { ...event, averageRating: avgRating._avg.rating ?? 0 };
+};
+
+const getEventBySlug = async (slug: string) => {
+    const event = await prisma.event.findUnique({
+        where: { slug, deletedAt: null },
+        include: EVENT_DETAIL_INCLUDE as any,
+    });
+
+    if (!event) {
+        throw new AppError(status.NOT_FOUND, "Event not found");
+    }
+
+    // Compute average rating
+    const avgRating = await prisma.review.aggregate({
+        where: { eventId: event.id },
         _avg: { rating: true },
     });
 
@@ -322,11 +341,73 @@ const getMyEvents = async (user: IRequestUser, queryParams: IEventQueryParams) =
     return { data: eventsWithStats, meta: result.meta };
 };
 
+const seedEvents = async () => {
+    const categories = [
+        { id: "019d30e4-4c95-7028-b1ae-53d2c4941102", name: "Fashion", titles: ["Spring Gala", "Fashion Week 2026", "Eco-Friendly Styles", "Streetwear Expo", "Designers Workshop", "Luxury Runway", "Vintage Fair"] },
+        { id: "019d30e4-0a2a-7229-b07f-529fb85de0c4", name: "Food & Drink", titles: ["Wine Tasting", "Street Food Fair", "Gourmet Dinner", "Cocktail Mixology", "Vegan Feast", "Baking Masterclass", "Coffee Festival"] },
+        { id: "019d30e4-932f-77ad-b8e2-d2e882b030f1", name: "Music", titles: ["Jazz Night", "Rock Concert", "Indie Music Show", "Symphony Evening", "EDM Pulse", "Hip Hop Fest", "Acoustic Sessions"] },
+        { id: "019d3d2b-5432-7609-a2c0-bd27b3280fbc", name: "Technology", titles: ["AI Summit", "Web3 Conference", "DevOps Meetup", "Cybersecurity Expo", "React Workshop", "Cloud Expo", "Startup Pitch"] }
+    ];
+
+    const organizers = [
+        "FOf7JxbuACYovt8iOBH9hZrq6gz9pGKC", // Planora
+        "FkniJORhgOiYbLbQQK1QACVVdfPhdaEd", // Anisuzzaman Khokan
+        "KYsLKFffPd8pLnjcqQ0z0EjWdlWHNwzD"  // Sumaiya Akter
+    ];
+
+
+    const seededEvents = [];
+
+    for (let i = 0; i < 30; i++) {
+        const categoryPool = categories[Math.floor(Math.random() * categories.length)];
+        const organizerId = organizers[Math.floor(Math.random() * organizers.length)];
+        const title = `${categoryPool.titles[Math.floor(Math.random() * categoryPool.titles.length)]} #${Math.floor(Math.random() * 1000)}`;
+        const slug = await generateUniqueSlug(title);
+        
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() + Math.floor(Math.random() * 90) + 1);
+        const endDate = new Date(startDate);
+        endDate.setHours(endDate.getHours() + Math.floor(Math.random() * 5) + 2);
+
+        const isOnline = Math.random() > 0.5;
+        const registrationFee = Math.random() > 0.3 ? Math.floor(Math.random() * 100) + 10 : 0;
+        const visibility = Math.random() > 0.2 ? EventVisibility.PUBLIC : EventVisibility.PRIVATE;
+        const isFeatured = Math.random() > 0.8;
+
+        const event = await prisma.event.create({
+            data: {
+                title,
+                slug,
+                description: `Experience the best of ${categoryPool.name} at this exclusive event. Don't miss out!`,
+                status: EventStatus.PUBLISHED,
+                visibility,
+                isFeatured,
+                startDate,
+                endDate,
+                timezone: "UTC",
+                isOnline,
+                venueName: isOnline ? null : "Grand Convention Center",
+                venueAddress: isOnline ? null : "123 Event St, Downtown",
+                onlineLink: isOnline ? "https://zoom.us/j/example" : null,
+                registrationFee,
+                currency: "USD",
+                maxParticipants: Math.floor(Math.random() * 200) + 50,
+                categoryId: categoryPool.id,
+                organizerId,
+            }
+        });
+        seededEvents.push(event);
+    }
+
+    return seededEvents;
+};
+
 export const EventService = {
     getAllEvents,
     getFeaturedEvent,
     getUpcomingEvents,
     getEventById,
+    getEventBySlug,
     getSimilarEvents,
     createEvent,
     updateEvent,
@@ -334,4 +415,6 @@ export const EventService = {
     deleteEvent,
     getMyEvents,
     toggleFeaturedEvent,
+    seedEvents,
 };
+

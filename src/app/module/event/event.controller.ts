@@ -45,6 +45,16 @@ const getEventById = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getEventBySlug = catchAsync(async (req: Request, res: Response) => {
+    const result = await EventService.getEventBySlug(req.params.slug as string);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: "Event retrieved successfully",
+        data: result,
+    });
+});
+
 const getSimilarEvents = catchAsync(async (req: Request, res: Response) => {
     const result = await EventService.getSimilarEvents(req.params.id as string);
     sendResponse(res, {
@@ -124,11 +134,22 @@ const toggleFeaturedEvent = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const seedEvents = catchAsync(async (req: Request, res: Response) => {
+    const result = await EventService.seedEvents();
+    sendResponse(res, {
+        httpStatusCode: status.CREATED,
+        success: true,
+        message: "30 events seeded successfully",
+        data: result,
+    });
+});
+
 export const EventController = {
     getAllEvents,
     getFeaturedEvent,
     getUpcomingEvents,
     getEventById,
+    getEventBySlug,
     getSimilarEvents,
     getMyEvents,
     createEvent,
@@ -136,4 +157,6 @@ export const EventController = {
     publishEvent,
     deleteEvent,
     toggleFeaturedEvent,
+    seedEvents,
 };
+

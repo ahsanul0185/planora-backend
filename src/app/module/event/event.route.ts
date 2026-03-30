@@ -10,6 +10,8 @@ const router = Router();
 
 router.get("/featured", EventController.getFeaturedEvent);
 router.get("/upcoming", EventController.getUpcomingEvents);
+router.post("/seed", EventController.seedEvents);
+
 
 router.get("/me",
     checkAuth(Role.ADMIN, Role.ORGANIZER),
@@ -22,7 +24,7 @@ router.post("/",
     EventController.createEvent);
 
 router.get("/", EventController.getAllEvents);
-
+router.get("/slug/:slug", EventController.getEventBySlug);
 router.get("/:id", EventController.getEventById);
 router.get("/:id/similar", EventController.getSimilarEvents);
 
