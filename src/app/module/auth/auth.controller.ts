@@ -241,9 +241,9 @@ const googleLogin = catchAsync((req: Request, res: Response) => {
 
     const encodedRedirectPath = encodeURIComponent(redirectPath as string);
 
-    const callbackURL = `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success?redirect=${encodedRedirectPath}`;
+    const callbackURL = `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success?redirect=${encodedRedirectPath}&role=${role}`;
 
-    // Store chosen role in a short-lived cookie (5 min) to survive the OAuth round-trip
+    // Store chosen role in a short-lived cookie (5 min) as a fallback
     res.cookie("oauth_role", role, {
         httpOnly: true,
         maxAge: 5 * 60 * 1000, // 5 minutes
@@ -261,8 +261,8 @@ const googleLogin = catchAsync((req: Request, res: Response) => {
 const googleLoginSuccess = catchAsync(async (req: Request, res: Response) => {
     const redirectPath = req.query.redirect as string || "/dashboard";
 
-    // Read the role chosen before OAuth redirect, then clear the cookie
-    const oauthRole = req.cookies["oauth_role"] as string | undefined;
+    // Read the role chosen before OAuth redirect from query (prioritized) or cookie
+    const oauthRole = (req.query.role as string) || (req.cookies["oauth_role"] as string | undefined);
     res.clearCookie("oauth_role", { path: "/" });
 
     // Use getSession with headers to let Better Auth handle its own cookie lookup (including prefixes if any)

@@ -427,8 +427,10 @@ const resetPassword = async (email: string, otp: string, newPassword: string) =>
 const googleLoginSuccess = async (session: Record<string, any>, oauthRole?: string) => {
     let userRole = session.user.role;
 
-    // Check if user was created in the last 10 seconds (brand new account)
-    const isNewUser = (Date.now() - new Date(session.user.createdAt).getTime()) < 10000;
+    // Check if user was created in the last 60 seconds (generous window for OAuth redirect)
+    const isNewUser = (Date.now() - new Date(session.user.createdAt).getTime()) < 60000;
+
+    console.log(`OAuth Success: User ID: ${session.user.id}, isNewUser: ${isNewUser}, requestedRole: ${oauthRole}`);
 
     // Only update role for new users who chose a specific role during sign-up
     if (isNewUser && oauthRole && (oauthRole === Role.PARTICIPANT || oauthRole === Role.ORGANIZER)) {
@@ -437,6 +439,7 @@ const googleLoginSuccess = async (session: Record<string, any>, oauthRole?: stri
             data: { role: oauthRole as Role }
         });
         userRole = updatedUser.role;
+        console.log(`Updated role for user ${session.user.id} to ${userRole}`);
     }
 
     const accessToken = tokenUtils.getAccessToken({
