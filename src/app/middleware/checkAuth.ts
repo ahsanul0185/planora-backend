@@ -10,12 +10,8 @@ import { jwtUtils } from "../utils/jwt";
 
 export const checkAuth = (...authRoles: Role[]) => async (req: Request, res: Response, next: NextFunction) => {
     try {
-        //Session Token Verification
+        // 1. Session Token Verification (Optional/Secondary)
         const sessionToken = CookieUtils.getCookie(req, "better-auth.session_token");
-
-        if (!sessionToken) {
-            throw new Error('Unauthorized access! No session token provided.');
-        }
 
         if (sessionToken) {
             const sessionExists = await prisma.session.findFirst({
@@ -33,22 +29,6 @@ export const checkAuth = (...authRoles: Role[]) => async (req: Request, res: Res
             if (sessionExists && sessionExists.user) {
                 const user = sessionExists.user;
 
-                const now = new Date();
-                const expiresAt = new Date(sessionExists.expiresAt)
-                const createdAt = new Date(sessionExists.createdAt)
-
-                const sessionLifeTime = expiresAt.getTime() - createdAt.getTime();
-                const timeRemaining = expiresAt.getTime() - now.getTime();
-                const percentRemaining = (timeRemaining / sessionLifeTime) * 100;
-
-                if (percentRemaining < 20) {
-                    res.setHeader('X-Session-Refresh', 'true');
-                    res.setHeader('X-Session-Expires-At', expiresAt.toISOString());
-                    res.setHeader('X-Time-Remaining', timeRemaining.toString());
-
-                    console.log("Session Expiring Soon!!");
-                }
-
                 if (user.status === UserStatus.BLOCKED || user.status === UserStatus.DELETED) {
                     throw new AppError(status.UNAUTHORIZED, 'Unauthorized access! User is not active.');
                 }
@@ -57,27 +37,16 @@ export const checkAuth = (...authRoles: Role[]) => async (req: Request, res: Res
                     throw new AppError(status.UNAUTHORIZED, 'Unauthorized access! User is deleted.');
                 }
 
-                if (authRoles.length > 0 && !authRoles.includes(user.role)) {
-                    throw new AppError(status.FORBIDDEN, 'Forbidden access! You do not have permission to access this resource.');
-                }
-
+                // Temporary populate req.user from session if available
                 req.user = {
-                    userId : user.id,
-                    role : user.role,
-                    email : user.email,
-                }
+                    userId: user.id,
+                    role: user.role,
+                    email: user.email,
+                };
             }
-
-            const accessToken = CookieUtils.getCookie(req, 'accessToken');
-
-            if (!accessToken) {
-                throw new AppError(status.UNAUTHORIZED, 'Unauthorized access! No access token provided.');
-            }
-
-
         }
 
-        //Access Token Verification
+        // 2. Access Token Verification (JWT - Primary for API)
         const accessToken = CookieUtils.getCookie(req, 'accessToken');
 
         if (!accessToken) {
@@ -86,15 +55,20 @@ export const checkAuth = (...authRoles: Role[]) => async (req: Request, res: Res
 
         const verifiedToken = jwtUtils.verifyToken(accessToken, envVars.ACCESS_TOKEN_SECRET);
 
-        if (!verifiedToken.success) {
-            throw new AppError(status.UNAUTHORIZED, 'Unauthorized access! Invalid access token.');
+        if (!verifiedToken.success || !verifiedToken.data) {
+            throw new AppError(status.UNAUTHORIZED, 'Unauthorized access! Invalid or expired access token.');
         }
 
-        if (authRoles.length > 0 && !authRoles.includes(verifiedToken.data!.role as Role)) {
+        // 3. IMPORTANT: Populate/Override req.user from JWT payload
+        // This ensures the most up-to-date role/status from the signed token is used.
+        req.user = verifiedToken.data as any;
+
+        // 4. Role Authorization
+        if (authRoles.length > 0 && !authRoles.includes(req.user.role as Role)) {
             throw new AppError(status.FORBIDDEN, 'Forbidden access! You do not have permission to access this resource.');
         }
 
-        next()
+        next();
     } catch (error: any) {
         next(error);
     }

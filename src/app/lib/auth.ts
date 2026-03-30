@@ -174,11 +174,14 @@ export const auth = betterAuth({
         signIn : `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
     },
 
-    trustedOrigins: [envVars.FRONTEND_URL, process.env.BETTER_AUTH_URL || "http://localhost:5000"],
+    trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000", envVars.FRONTEND_URL],
 
     advanced: {
-        // disableCSRFCheck: true,
-        useSecureCookies : true,
+        // useSecureCookies is intentionally NOT set here.
+        // Setting it to true prefixes ALL cookie names with __Secure-,
+        // which breaks any code that reads "better-auth.session_token" directly
+        // (controller, proxy, frontend). Security is intact because every cookie
+        // already has secure: true set explicitly in its attributes below.
         cookies:{
             state:{
                 attributes:{
