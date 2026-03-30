@@ -10,7 +10,7 @@ const router = Router();
 
 router.get("/featured", EventController.getFeaturedEvent);
 router.get("/upcoming", EventController.getUpcomingEvents);
-router.post("/seed", EventController.seedEvents);
+// router.post("/seed", EventController.seedEvents);
 
 
 router.get("/me",
