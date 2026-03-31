@@ -96,16 +96,19 @@ const getUserById = async (id: string) => {
     return user;
 };
 
-const PARTICIPATION_EVENT_INCLUDE = {
+const getParticipationEventInclude = (userId: string) => ({
     event: {
         include: {
             category: true,
             organizer: { select: { id: true, name: true, email: true, image: true } },
             tags: { select: { id: true, name: true } },
             _count: { select: { participations: true, reviews: true } },
+            reviews: {
+                where: { userId, deletedAt: null }
+            }
         },
     },
-};
+});
 
 const getMyJoinedEvents = async (userId: string, queryParams: IMyJoinedEventsQueryParams) => {
     const builder = new QueryBuilder(
@@ -119,7 +122,7 @@ const getMyJoinedEvents = async (userId: string, queryParams: IMyJoinedEventsQue
         .where({ userId })
         .sort()
         .paginate()
-        .include(PARTICIPATION_EVENT_INCLUDE as any);
+        .include(getParticipationEventInclude(userId) as any);
 
     return builder.execute();
 };

@@ -12,6 +12,11 @@ router.get("/me",
     checkAuth(Role.PARTICIPANT, Role.ADMIN),
     ReviewController.getMyReviews);
 
+// Admin - all reviews across the platform
+router.get("/admin",
+    checkAuth(Role.ADMIN),
+    ReviewController.getAllReviews);
+
 // All reviews for an event with average rating (public)
 router.get("/events/:id",
     ReviewController.getEventReviews);

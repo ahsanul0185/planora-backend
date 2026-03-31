@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to Planora</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,220 +14,164 @@
         }
 
         body {
-            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: #1a1a1b;
+            font-family: 'Inter', sans-serif;
+            background-color: #f9faf6;
+            color: #191c1b;
             line-height: 1.6;
         }
 
         .wrapper {
             width: 100%;
-            table-layout: fixed;
-            background-color: #f0f2f5;
-            padding-bottom: 40px;
+            background-color: #f9faf6;
+            padding: 40px 20px;
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
             background-color: #ffffff;
-            border-radius: 16px;
+            border-radius: 2px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            margin-top: 40px;
+            box-shadow: 0 20px 40px rgba(25, 28, 27, 0.04);
+            border: 1px solid #edeeeb;
         }
 
         .header {
-            background: linear-gradient(135deg, #6C63FF 0%, #3b82f6 100%);
-            color: white;
-            padding: 60px 40px;
-            text-align: center;
+            padding: 60px 40px 40px;
+            text-align: left;
+        }
+
+        .brand {
+            margin-bottom: 24px;
+            display: block;
         }
 
         .header h1 {
-            font-size: 36px;
-            margin-bottom: 12px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-
-        .header p {
-            font-size: 18px;
-            opacity: 0.9;
-            font-weight: 400;
+            font-family: 'Newsreader', serif;
+            font-size: 44px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: #1a4d3c;
+            font-weight: 500;
         }
 
         .content {
-            padding: 50px 40px;
+            padding: 0 40px 60px;
         }
 
         .greeting {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: #1a1a1b;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #191c1b;
         }
 
         .message {
             font-size: 16px;
-            color: #4b5563;
-            margin-bottom: 32px;
+            color: #404944;
+            margin-bottom: 40px;
         }
 
-        .features {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
+        .feature-grid {
             margin-bottom: 40px;
         }
 
         .feature-item {
-            background-color: #f8fafc;
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid #6C63FF;
+            padding: 24px;
+            background-color: #f3f4f1;
+            border-radius: 4px;
+            border-left: 4px solid #1a4d3c;
+            margin-bottom: 16px;
         }
 
         .feature-item h3 {
-            font-size: 16px;
-            font-weight: 700;
+            font-family: 'Newsreader', serif;
+            font-size: 20px;
+            color: #1a4d3c;
             margin-bottom: 8px;
-            color: #1e293b;
         }
 
         .feature-item p {
             font-size: 14px;
-            color: #64748b;
+            color: #58685f;
         }
 
         .cta-container {
-            text-align: center;
-            margin-top: 20px;
+            text-align: left;
         }
 
         .cta-button {
             display: inline-block;
-            background-color: #6C63FF;
-            color: white !important;
-            padding: 16px 40px;
-            border-radius: 12px;
+            background-color: #1a4d3c;
+            color: #ffffff !important;
+            padding: 18px 40px;
+            border-radius: 100px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 16px;
-            transition: transform 0.2s, background-color 0.2s;
-            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
-        }
-
-        .cta-button:hover {
-            background-color: #5a52d9;
-            transform: translateY(-2px);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         .footer {
-            background-color: #f8fafc;
+            background-color: #f3f4f1;
             padding: 40px;
-            text-align: center;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .footer-logo {
-            font-size: 20px;
-            font-weight: 800;
-            color: #6C63FF;
-            margin-bottom: 16px;
-            display: block;
+            text-align: left;
+            border-top: 1px solid #e2e3e0;
         }
 
         .footer-text {
-            font-size: 13px;
-            color: #94a3b8;
+            font-size: 11px;
+            color: #707974;
             margin-bottom: 8px;
         }
 
-        .social-links {
-            margin: 24px 0;
-        }
-
-        .social-links a {
-            margin: 0 10px;
-            text-decoration: none;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .divider {
-            height: 1px;
-            background-color: #e2e8f0;
-            margin: 32px 0;
-        }
-
         @media (max-width: 600px) {
-            .header { padding: 40px 20px; }
-            .content { padding: 40px 20px; }
-            .header h1 { font-size: 28px; }
+            .header { padding: 40px 20px 20px; }
+            .content { padding: 0 20px 40px; }
+            .header h1 { font-size: 32px; }
         }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <div class="container">
-            <!-- Header -->
             <div class="header">
-                <h1>Welcome to Planora!</h1>
-                <p>Your journey to amazing events starts here.</p>
+                <a href="#" class="brand">
+                    <img src="https://res.cloudinary.com/dw8bzha3e/image/upload/v1774958156/planora-logo_n5dfou.png" alt="Planora Logo" style="height: 25px; display: block;">
+                </a>
+                <h1>Welcome to the <br/>Planora Circle.</h1>
             </div>
 
-            <!-- Content -->
             <div class="content">
                 <div class="greeting">
                     Hey <%= name %>,
                 </div>
 
                 <p class="message">
-                    We're absolutely thrilled to have you join our community! Your email has been successfully verified, and you're now all set to explore, create, and experience the best events around.
+                    We're thrilled to have you join our community! Your journey to curated, sophisticated experiences starts here. Explore, create, and experience the best moments.
                 </p>
 
-                <div class="features">
+                <div class="feature-grid">
                     <div class="feature-item">
                         <h3>Discover Events</h3>
-                        <p>Find events that match your interests, from tech workshops to music festivals.</p>
+                        <p>Find extraordinary gatherings that match your taste.</p>
                     </div>
                     <div class="feature-item">
                         <h3>Organize with Ease</h3>
-                        <p>Create and manage your own events with our powerful host dashboard.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>Seamless Payments</h3>
-                        <p>Register and pay for events securely with our integrated Stripe system.</p>
+                        <p>Create and manage events with our powerful host dashboard.</p>
                     </div>
                 </div>
 
                 <div class="cta-container">
                     <a href="<%= dashboardUrl %>" class="cta-button">Explore Your Dashboard</a>
                 </div>
-
-                <div class="divider"></div>
-
-                <p style="font-size: 14px; color: #64748b; text-align: center;">
-                    "The best way to predict the future is to create it." - Let's start planning!
-                </p>
             </div>
 
-            <!-- Footer -->
             <div class="footer">
-                <span class="footer-logo">Planora</span>
-                <p class="footer-text">Plan. Attend. Experience.</p>
-                <p class="footer-text">&copy; 2026 Planora Platform. All rights reserved.</p>
-                
-                <div class="social-links">
-                    <a href="#">Twitter</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">LinkedIn</a>
-                </div>
-
-                <p class="footer-text" style="font-size: 11px;">
-                    This email was sent to <%= email %>. If you didn't create an account on Planora, please ignore this email.
-                </p>
+                <img src="https://res.cloudinary.com/dw8bzha3e/image/upload/v1774958156/planora-logo_n5dfou.png" alt="Planora Logo" style="height: 20px; margin-bottom: 16px; opacity: 0.8;">
+                <p class="footer-text">© 2026 Planora. The Digital Maître D’.</p>
+                <p class="footer-text">This email was sent to <%= email %>. Designed for visionaries.</p>
             </div>
         </div>
     </div>

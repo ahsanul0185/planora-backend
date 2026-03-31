@@ -154,10 +154,24 @@ const getMyReviews = async (user: IRequestUser, queryParams: any) => {
     return await builder.execute();
 };
 
+const getAllReviews = async (queryParams: any) => {
+    const builder = new QueryBuilder(prisma.review, queryParams, {})
+        .where({ deletedAt: null })
+        .sort()
+        .paginate()
+        .include({
+            event: { select: { id: true, title: true, bannerImage: true, startDate: true } },
+            user: { select: { id: true, name: true, image: true } }
+        });
+
+    return await builder.execute();
+};
+
 export const ReviewService = {
     createReview,
     getEventReviews,
     updateReview,
     deleteReview,
-    getMyReviews
+    getMyReviews,
+    getAllReviews
 };

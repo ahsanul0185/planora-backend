@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment Invoice - Planora</title>
+    <title>Payment Invoice</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,64 +14,71 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            background-color: #f9faf6;
+            color: #191c1b;
             line-height: 1.6;
+        }
+
+        .wrapper {
+            width: 100%;
+            background-color: #f9faf6;
+            padding: 40px 20px;
         }
 
         .container {
             max-width: 650px;
             margin: 0 auto;
             background-color: #ffffff;
-            border-radius: 8px;
+            border-radius: 2px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(25, 28, 27, 0.04);
+            border: 1px solid #edeeeb;
         }
 
         .header {
-            background: linear-gradient(135deg, #6C63FF 0%, #3b82f6 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
+            padding: 60px 40px 40px;
+            text-align: left;
+        }
+
+        .brand {
+            margin-bottom: 24px;
+            display: block;
         }
 
         .header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-
-        .header .brand {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            opacity: 0.95;
+            font-family: 'Newsreader', serif;
+            font-size: 36px;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            color: #1a4d3c;
+            font-weight: 500;
         }
 
         .header p {
             font-size: 14px;
-            opacity: 0.85;
+            color: #58685f;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         .content {
-            padding: 40px 30px;
+            padding: 0 40px 60px;
         }
 
         .greeting {
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
+            margin-bottom: 16px;
+            color: #191c1b;
         }
 
         .info-box {
-            background-color: #f9f9f9;
-            border-left: 4px solid #6C63FF;
-            padding: 20px;
-            margin-bottom: 25px;
+            background-color: #f3f4f1;
+            padding: 24px;
             border-radius: 4px;
+            margin-bottom: 40px;
+            border-left: 4px solid #1a4d3c;
         }
 
         .info-row {
@@ -80,243 +89,150 @@
         }
 
         .info-label {
-            font-weight: 600;
-            color: #333;
-            min-width: 160px;
+            color: #58685f;
+            font-weight: 500;
         }
 
         .info-value {
-            color: #666;
+            color: #191c1b;
+            font-weight: 600;
             text-align: right;
-            word-break: break-all;
         }
 
         .section-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #333;
-            border-bottom: 2px solid #6C63FF;
-            padding-bottom: 10px;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-
-        .details-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .details-box {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 4px;
-        }
-
-        .details-box p {
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .details-box .label {
-            font-weight: 600;
-            color: #333;
+            font-family: 'Newsreader', serif;
+            font-size: 20px;
+            color: #1a4d3c;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #edeeeb;
+            padding-bottom: 8px;
         }
 
         .amount-box {
-            background: linear-gradient(135deg, #6C63FF 0%, #3b82f6 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 6px;
-            margin: 25px 0;
+            background-color: #1a4d3c;
+            color: #ffffff;
+            padding: 32px;
+            border-radius: 4px;
             text-align: center;
+            margin-bottom: 40px;
         }
 
         .amount-label {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            opacity: 0.8;
         }
 
         .amount-value {
-            font-size: 36px;
-            font-weight: bold;
+            font-family: 'Newsreader', serif;
+            font-size: 40px;
+            font-weight: 700;
         }
 
-        .payment-status {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
+        .cta-container {
             text-align: center;
-            font-weight: 600;
+            margin-bottom: 40px;
         }
 
-        .download-section {
-            text-align: center;
-            margin: 30px 0;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        .download-btn {
+        .cta-button {
             display: inline-block;
-            background-color: #6C63FF;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 4px;
+            border: 1px solid #1a4d3c;
+            color: #1a4d3c !important;
+            padding: 14px 32px;
+            border-radius: 100px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         .footer {
-            background-color: #f9f9f9;
-            padding: 30px;
-            text-align: center;
-            border-top: 1px solid #eee;
+            background-color: #f3f4f1;
+            padding: 40px;
+            text-align: left;
+            border-top: 1px solid #e2e3e0;
         }
 
-        .footer p {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .footer a {
-            color: #6C63FF;
-            text-decoration: none;
-        }
-
-        .divider {
-            height: 1px;
-            background-color: #eee;
-            margin: 25px 0;
+        .footer-text {
+            font-size: 11px;
+            color: #707974;
+            margin-bottom: 8px;
         }
 
         @media (max-width: 600px) {
-            .details-grid { grid-template-columns: 1fr; }
+            .header { padding: 40px 20px 20px; }
+            .content { padding: 0 20px 40px; }
+            .header h1 { font-size: 28px; }
             .info-row { flex-direction: column; }
-            .info-value { text-align: left; margin-top: 5px; }
-            .amount-value { font-size: 28px; }
-            .header h1 { font-size: 24px; }
+            .info-value { text-align: left; margin-top: 4px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="brand">🎟️ Planora</div>
-            <h1>INVOICE</h1>
-            <p>Your Event Registration Payment Receipt</p>
-        </div>
-
-        <!-- Content -->
-        <div class="content">
-            <div class="greeting">
-                Hello <%= attendeeName %>,
+    <div class="wrapper">
+        <div class="container">
+            <div class="header">
+                <a href="#" class="brand">
+                    <img src="https://res.cloudinary.com/dw8bzha3e/image/upload/v1774958156/planora-logo_n5dfou.png" alt="Planora Logo" style="height: 25px; display: block;">
+                </a>
+                <h1>Invoice Summary</h1>
+                <p>Payment Confirmation Receipt</p>
             </div>
 
-            <p style="margin-bottom: 20px; color: #666; font-size: 14px;">
-                Your payment for the event registration has been successfully processed. Below is your payment invoice.
-            </p>
+            <div class="content">
+                <div class="greeting">
+                    Dear <%= attendeeName %>,
+                </div>
 
-            <!-- Invoice Details -->
-            <div class="info-box">
-                <div class="info-row">
-                    <span class="info-label">Invoice ID:</span>
-                    <span class="info-value"><strong><%= invoiceId %></strong></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Transaction ID:</span>
-                    <span class="info-value"><%= transactionId %></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Session Ref:</span>
-                    <span class="info-value"><%= gatewayRef %></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Payment Status:</span>
-                    <span class="info-value" style="color: #28a745; font-weight: 600;">✓ PAID</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Payment Date:</span>
-                    <span class="info-value"><%= paymentDate %></span>
-                </div>
-            </div>
-
-            <!-- Event Info -->
-            <div class="section-title">Event Details</div>
-            <div class="details-grid">
-                <div class="details-box">
-                    <p><span class="label">Event:</span></p>
-                    <p><strong><%= eventTitle %></strong></p>
-                </div>
-                <div class="details-box">
-                    <p><span class="label">Event Date:</span></p>
-                    <p><strong><%= eventDate %></strong></p>
-                </div>
-            </div>
-
-            <!-- Amount Section -->
-            <div class="section-title">Payment Summary</div>
-
-            <div style="background-color: #f9f9f9; padding: 20px; border-radius: 4px; margin-bottom: 20px;">
-                <div class="info-row">
-                    <span class="info-label">Registration Fee:</span>
-                    <span class="info-value"><strong><%= amount.toFixed(2) %> <%= currency.toUpperCase() %></strong></span>
-                </div>
-            </div>
-
-            <div class="amount-box">
-                <div class="amount-label">Total Amount Paid</div>
-                <div class="amount-value"><%= amount.toFixed(2) %> <%= currency.toUpperCase() %></div>
-            </div>
-
-            <div class="payment-status">
-                ✓ Payment Confirmed — Registration Successful
-            </div>
-
-            <!-- Download Invoice -->
-            <div class="download-section">
-                <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
-                    Your invoice PDF is attached to this email for your records.
+                <p class="message" style="margin-bottom: 24px;">
+                    Your payment for the event registration has been successfully processed. Thank you for choosing Planora.
                 </p>
+
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="info-label">Invoice ID:</span>
+                        <span class="info-value"><%= invoiceId %></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Transaction ID:</span>
+                        <span class="info-value"><%= transactionId %></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Payment Date:</span>
+                        <span class="info-value"><%= paymentDate %></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value" style="color: #1a4d3c;">✓ Confirmed Paid</span>
+                    </div>
+                </div>
+
+                <div class="section-title">Event Reservation</div>
+                <div style="margin-bottom: 40px;">
+                    <p style="font-weight: 700; color: #1a4d3c; font-size: 18px;"><%= eventTitle %></p>
+                    <p style="color: #58685f; font-size: 14px;"><%= eventDate %></p>
+                </div>
+
+                <div class="amount-box">
+                    <div class="amount-label">Total Amount Paid</div>
+                    <div class="amount-value"><%= amount.toFixed(2) %> <%= currency.toUpperCase() %></div>
+                </div>
+
                 <% if (invoiceUrl) { %>
-                    <a href="<%= invoiceUrl %>" class="download-btn">Download Invoice PDF</a>
+                <div class="cta-container">
+                    <a href="<%= invoiceUrl %>" class="cta-button">Download PDF Invoice</a>
+                </div>
                 <% } %>
             </div>
 
-            <div class="divider"></div>
-
-            <p style="font-size: 13px; color: #666; margin-bottom: 15px;">
-                <strong>Next Steps:</strong><br>
-                Your spot at the event has been confirmed. Log in to your Planora dashboard to view your participation details.
-            </p>
-
-            <p style="font-size: 13px; color: #666;">
-                If you have any questions regarding this payment or need assistance, please contact our support team.
-            </p>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p><strong>Planora</strong></p>
-            <p>Plan. Attend. Experience.</p>
-            <p style="margin-top: 15px; font-size: 11px; color: #999;">
-                &copy; 2026 Planora. All rights reserved.
-            </p>
-            <p style="margin-top: 10px;">
-                <a href="https://planora.com">Visit our website</a> |
-                <a href="mailto:support@planora.com">Contact Support</a>
-            </p>
-            <p style="margin-top: 15px; font-size: 11px; color: #999;">
-                This is an automatically generated email. Please do not reply directly to this email.
-            </p>
+            <div class="footer">
+                <img src="https://res.cloudinary.com/dw8bzha3e/image/upload/v1774958156/planora-logo_n5dfou.png" alt="Planora Logo" style="height: 20px; margin-bottom: 16px; opacity: 0.8;">
+                <p class="footer-text">© 2026 Planora. The Digital Maître D’.</p>
+                <p class="footer-text">This is an automatically generated receipt. Please do not reply.</p>
+            </div>
         </div>
     </div>
 </body>

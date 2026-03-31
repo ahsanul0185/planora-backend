@@ -8,6 +8,7 @@ import { QueryBuilder } from "../../utils/QueryBuilder";
 import { envVars } from "../../config/env";
 import { stripe } from "../../config/stripe.config";
 import { validateEventForJoining, validateEventForPaidJoining } from "./participation.utils";
+import { sendEmail } from "../../utils/email";
 
 const joinPublicFreeEvent = async (eventId: string, user: IRequestUser) => {
     await validateEventForJoining(eventId, user.userId, EventVisibility.PUBLIC);
@@ -232,6 +233,7 @@ const exportParticipantsAsCSV = async (eventId: string, user: IRequestUser) => {
 const updateParticipationStatus = async (eventId: string, participantUserId: string, newStatus: ParticipationStatus, user: IRequestUser) => {
     const event = await prisma.event.findFirst({
         where: { id: eventId, organizerId: user.userId },
+        include: { organizer: { select: { name: true } } }
     });
 
     if (!event) {
@@ -307,6 +309,20 @@ const updateParticipationStatus = async (eventId: string, participantUserId: str
             }
         }
     });
+
+    if ((newStatus === ParticipationStatus.APPROVED || newStatus === ParticipationStatus.CONFIRMED) && participation.status === ParticipationStatus.PENDING) {
+        sendEmail({
+            to: updatedParticipation.user.email,
+            subject: `Participation Request Approved: ${event.title}`,
+            templateName: "participation-approved",
+            templateData: {
+                participantName: updatedParticipation.user.name,
+                eventName: event.title,
+                organizerName: event.organizer.name,
+                dashboardUrl: `${envVars.FRONTEND_URL}/dashboard/my-joined-events`
+            }
+        }).catch((err: any) => console.error("Failed to send approval email to:", updatedParticipation.user.email, err));
+    }
 
     return updatedParticipation;
 };
