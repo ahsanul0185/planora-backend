@@ -412,7 +412,7 @@ const initiatePaymentForApprovedParticipation = async (eventId: string, user: IR
             participationId: participation.id,
             type: "PRIVATE_PAID",
         },
-        success_url: `${envVars.FRONTEND_URL}/dashboard/events/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${envVars.FRONTEND_URL}/events/payment-success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${envVars.FRONTEND_URL}/events/${eventId}?error=payment_cancelled`,
     });
 
