@@ -117,7 +117,7 @@ const joinPublicPaidEvent = async (eventId: string, user: IRequestUser) => {
             participationId: transaction.participationId,
             type: "PUBLIC",
         },
-        success_url: `${envVars.FRONTEND_URL}/dashboard/events/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${envVars.FRONTEND_URL}/events/payment-success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${envVars.FRONTEND_URL}/events/${eventId}?error=payment_cancelled`,
     });
 

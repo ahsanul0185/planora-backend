@@ -44,12 +44,13 @@ const handleStripeWebhookEvent = catchAsync(async (req: Request, res: Response) 
 });
 
 const getMyPayments = catchAsync(async (req: Request, res: Response) => {
-    const result = await PaymentService.getMyPayments(req.user);
+    const result = await PaymentService.getMyPayments(req.user, req.query);
     sendResponse(res, {
         httpStatusCode: status.OK,
         success: true,
         message: "Payments retrieved successfully",
-        data: result
+        data: result.data,
+        meta: result.meta,
     });
 });
 

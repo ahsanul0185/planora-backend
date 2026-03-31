@@ -1,11 +1,12 @@
 import Stripe from "stripe";
-import { PaymentStatus, ParticipationStatus, InvitationStatus } from "../../../generated/prisma/enums";
+import { PaymentStatus, ParticipationStatus, InvitationStatus, Role } from "../../../generated/prisma/enums";
 import { uploadFileToCloudinary } from "../../config/cloudinary.config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../config/stripe.config";
 import { IRequestUser } from "../../interfaces/requestUser.interface";
 import { sendEmail } from "../../utils/email";
 import { generateInvoicePdf } from "./payment.utils";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
 const handlerStripeWebhookEvent = async (event: Stripe.Event) => {
     // Idempotency check — skip already-processed events
@@ -226,17 +227,41 @@ const handlerStripeWebhookEvent = async (event: Stripe.Event) => {
     return { message: `Webhook Event ${event.id} processed successfully` };
 };
 
-const getMyPayments = async (user: IRequestUser) => {
-    const payments = await prisma.payment.findMany({
-        where: { userId: user.userId },
-        include: {
-            event: {
-                select: { id: true, title: true, bannerImage: true, category: true, startDate: true }
-            }
+const getMyPayments = async (user: IRequestUser, queryParams: any) => {
+    let whereCondition: any = {};
+
+    if (user.role === Role.PARTICIPANT) {
+        whereCondition = { userId: user.userId };
+    } else if (user.role === Role.ORGANIZER) {
+        whereCondition = {
+            OR: [
+                { userId: user.userId },
+                { event: { organizerId: user.userId } }
+            ]
+        };
+    } else if (user.role === Role.ADMIN) {
+        whereCondition = {};
+    }
+
+    const builder = new QueryBuilder(prisma.payment, queryParams, {
+        searchableFields: ["transactionId", "event.title", "user.name", "user.email"],
+        filterableFields: ["status"],
+    })
+    .where(whereCondition)
+    .search()
+    .filter()
+    .sort()
+    .paginate()
+    .include({
+        user: { 
+            select: { id: true, name: true, email: true, image: true } 
         },
-        orderBy: { createdAt: "desc" }
+        event: {
+            select: { id: true, title: true, bannerImage: true, category: true, startDate: true }
+        }
     });
-    return payments;
+
+    return builder.execute();
 };
 
 export const PaymentService = {
